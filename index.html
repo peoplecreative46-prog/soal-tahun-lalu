@@ -1,0 +1,1745 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulasi SKD CPNS 2025</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a237e 0%, #0d47a1 50%, #01579b 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header */
+        .header {
+            background: white;
+            border-radius: 12px;
+            padding: 20px 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .header h1 {
+            font-size: 1.4em;
+            color: #1a237e;
+        }
+
+        .header .subtitle {
+            font-size: 0.85em;
+            color: #666;
+            margin-top: 4px;
+        }
+
+        .timer-box {
+            background: #e8f5e9;
+            border: 2px solid #4caf50;
+            border-radius: 8px;
+            padding: 10px 20px;
+            text-align: center;
+        }
+
+        .timer-box.warning {
+            background: #fff3e0;
+            border-color: #ff9800;
+        }
+
+        .timer-box.danger {
+            background: #ffebee;
+            border-color: #f44336;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .timer-label {
+            font-size: 0.75em;
+            color: #666;
+            text-transform: uppercase;
+        }
+
+        .timer-value {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #2e7d32;
+            font-family: 'Courier New', monospace;
+        }
+
+        .timer-box.warning .timer-value { color: #e65100; }
+        .timer-box.danger .timer-value { color: #c62828; }
+
+        /* Progress Bar */
+        .progress-container {
+            background: white;
+            border-radius: 12px;
+            padding: 15px 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 0.85em;
+            color: #555;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4caf50, #8bc34a);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        /* Main Content */
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 280px;
+            gap: 20px;
+        }
+
+        @media (max-width: 900px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Question Card */
+        .question-card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        }
+
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e3f2fd;
+        }
+
+        .question-number {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #1a237e;
+        }
+
+        .question-category {
+            font-size: 0.8em;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        .cat-twk { background: #e3f2fd; color: #1565c0; }
+        .cat-tiu { background: #f3e5f5; color: #7b1fa2; }
+        .cat-tkp { background: #e8f5e9; color: #2e7d32; }
+
+        .question-text {
+            font-size: 1em;
+            line-height: 1.7;
+            margin-bottom: 25px;
+            color: #2c3e50;
+            white-space: pre-line;
+        }
+
+        .question-text .passage {
+            background: #f8f9fa;
+            border-left: 4px solid #1a237e;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 8px 8px 0;
+            font-size: 0.92em;
+            line-height: 1.6;
+        }
+
+        /* Options */
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option-item {
+            display: flex;
+            align-items: flex-start;
+            padding: 14px 18px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            gap: 12px;
+        }
+
+        .option-item:hover {
+            border-color: #90caf9;
+            background: #f5f9ff;
+            transform: translateX(4px);
+        }
+
+        .option-item.selected {
+            border-color: #1a237e;
+            background: #e8eaf6;
+            box-shadow: 0 2px 8px rgba(26,35,126,0.15);
+        }
+
+        .option-letter {
+            min-width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #f5f5f5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.9em;
+            color: #555;
+            flex-shrink: 0;
+        }
+
+        .option-item.selected .option-letter {
+            background: #1a237e;
+            color: white;
+        }
+
+        .option-text {
+            font-size: 0.95em;
+            line-height: 1.5;
+            color: #444;
+            padding-top: 4px;
+        }
+
+        /* Navigation */
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.95em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+        .btn:active { transform: translateY(0); }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+        .btn-prev { background: #eceff1; color: #546e7a; }
+        .btn-next { background: #1a237e; color: white; }
+        .btn-flag { background: #fff3e0; color: #e65100; border: 2px solid #ffb74d; }
+        .btn-flag.flagged { background: #ff9800; color: white; }
+        .btn-submit { background: #c62828; color: white; padding: 12px 30px; }
+        .btn-start { background: #1a237e; color: white; padding: 15px 40px; font-size: 1.1em; }
+        .btn-reset { background: #757575; color: white; }
+
+        /* Sidebar */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .nav-panel {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        }
+
+        .nav-panel h3 {
+            font-size: 0.9em;
+            color: #555;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .nav-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 6px;
+        }
+
+        .nav-item {
+            width: 100%;
+            aspect-ratio: 1;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: #666;
+        }
+
+        .nav-item:hover { border-color: #90caf9; background: #e3f2fd; }
+        .nav-item.current { border-color: #1a237e; background: #1a237e; color: white; }
+        .nav-item.answered { border-color: #4caf50; background: #e8f5e9; color: #2e7d32; }
+        .nav-item.flagged { border-color: #ff9800; background: #fff3e0; color: #e65100; }
+        .nav-item.answered.flagged { border-color: #ff9800; background: #fff8e1; }
+
+        .nav-legend {
+            margin-top: 12px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            font-size: 0.72em;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 3px;
+            border: 2px solid;
+        }
+
+        .stats-panel {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        }
+
+        .stats-panel h3 {
+            font-size: 0.9em;
+            color: #555;
+            margin-bottom: 12px;
+        }
+
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 0;
+            font-size: 0.85em;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .stat-row:last-child { border-bottom: none; }
+        .stat-value { font-weight: bold; }
+
+        /* Start Screen */
+        .start-screen {
+            background: white;
+            border-radius: 16px;
+            padding: 50px;
+            text-align: center;
+            box-shadow: 0 8px 40px rgba(0,0,0,0.2);
+            max-width: 700px;
+            margin: 40px auto;
+        }
+
+        .start-screen h1 {
+            color: #1a237e;
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .start-screen .logo {
+            font-size: 4em;
+            margin-bottom: 20px;
+        }
+
+        .start-screen .info-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin: 30px 0;
+            text-align: center;
+        }
+
+        .info-item {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        .info-item .label { font-size: 0.8em; color: #666; margin-bottom: 5px; }
+        .info-item .value { font-size: 1.2em; font-weight: bold; color: #1a237e; }
+
+        .rules-list {
+            text-align: left;
+            margin: 25px 0;
+            padding: 20px;
+            background: #fffde7;
+            border-radius: 10px;
+            border: 1px solid #fff59d;
+        }
+
+        .rules-list h3 { color: #f57f17; margin-bottom: 10px; font-size: 0.95em; }
+        .rules-list li { margin: 8px 0; font-size: 0.88em; color: #555; margin-left: 20px; }
+
+        /* Result Screen */
+        .result-screen {
+            display: none;
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 8px 40px rgba(0,0,0,0.2);
+            max-width: 800px;
+            margin: 30px auto;
+        }
+
+        .result-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .result-header h2 { color: #1a237e; font-size: 1.8em; }
+        .result-header .pass-badge {
+            display: inline-block;
+            padding: 8px 25px;
+            border-radius: 25px;
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-top: 10px;
+        }
+
+        .pass-badge.lulus { background: #e8f5e9; color: #2e7d32; border: 2px solid #4caf50; }
+        .pass-badge.tidak-lulus { background: #ffebee; color: #c62828; border: 2px solid #f44336; }
+
+        .score-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin: 25px 0;
+        }
+
+        .score-card {
+            text-align: center;
+            padding: 20px;
+            border-radius: 12px;
+            border: 2px solid #e0e0e0;
+        }
+
+        .score-card .cat-name { font-size: 0.85em; color: #666; margin-bottom: 5px; }
+        .score-card .score { font-size: 2em; font-weight: bold; }
+        .score-card .passing { font-size: 0.75em; color: #999; margin-top: 5px; }
+        .score-card.pass { border-color: #4caf50; background: #f1f8e9; }
+        .score-card.pass .score { color: #2e7d32; }
+        .score-card.fail { border-color: #f44336; background: #fce4ec; }
+        .score-card.fail .score { color: #c62828; }
+
+        .total-score {
+            text-align: center;
+            padding: 20px;
+            background: #e8eaf6;
+            border-radius: 12px;
+            margin: 20px 0;
+        }
+
+        .total-score .label { font-size: 0.9em; color: #555; }
+        .total-score .value { font-size: 2.5em; font-weight: bold; color: #1a237e; }
+
+        .review-section {
+            margin-top: 30px;
+            max-height: 400px;
+            overflow-y: auto;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .review-item {
+            padding: 12px;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 0.85em;
+        }
+
+        .review-item:last-child { border-bottom: none; }
+        .review-item .q-num { font-weight: bold; color: #1a237e; }
+        .review-item .correct { color: #2e7d32; }
+        .review-item .wrong { color: #c62828; }
+
+        /* Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 16px;
+            padding: 35px;
+            max-width: 450px;
+            width: 90%;
+            text-align: center;
+        }
+
+        .modal-content h3 { color: #c62828; margin-bottom: 15px; }
+        .modal-content p { color: #555; margin-bottom: 20px; font-size: 0.95em; }
+        .modal-buttons { display: flex; gap: 12px; justify-content: center; }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .container { padding: 10px; }
+            .header { padding: 15px; }
+            .question-card { padding: 20px; }
+            .start-screen { padding: 30px 20px; }
+            .start-screen .info-grid { grid-template-columns: 1fr; }
+            .score-cards { grid-template-columns: 1fr; }
+            .nav-grid { grid-template-columns: repeat(5, 1fr); }
+        }
+
+        .hidden { display: none !important; }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb { background: #bbb; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #999; }
+    </style>
+</head>
+<body>
+    <!-- Start Screen -->
+    <div id="startScreen" class="container">
+        <div class="start-screen">
+            <div class="logo">🏛️</div>
+            <h1>SIMULASI SKD CPNS 2025</h1>
+            <p style="color:#666; margin-top:5px;">Seleksi Kompetensi Dasar - Fr Soal Asli</p>
+            
+            <div class="info-grid">
+                <div class="info-item">
+                    <div class="label">Total Soal</div>
+                    <div class="value">110</div>
+                </div>
+                <div class="info-item">
+                    <div class="label">Waktu</div>
+                    <div class="value">100 Menit</div>
+                </div>
+                <div class="info-item">
+                    <div class="label">Passing Grade</div>
+                    <div class="value">311/550</div>
+                </div>
+            </div>
+
+            <div class="rules-list">
+                <h3>📋 Ketentuan Ujian:</h3>
+                <ul>
+                    <li><strong>TWK</strong> (Tes Wawasan Kebangsaan): 30 soal, passing grade 65</li>
+                    <li><strong>TIU</strong> (Tes Intelegensia Umum): 35 soal, passing grade 80</li>
+                    <li><strong>TKP</strong> (Tes Karakteristik Pribadi): 45 soal, passing grade 166</li>
+                    <li>Skor TWK & TIU: Benar = 5, Salah/Kosong = 0</li>
+                    <li>Skor TKP: 1-5 per soal (tidak ada skor 0 kecuali tidak dijawab)</li>
+                    <li>Waktu pengerjaan: 100 menit</li>
+                    <li>Soal dapat ditandai untuk dilihat kembali</li>
+                </ul>
+            </div>
+
+            <button class="btn btn-start" onclick="startExam()">🚀 MULAI UJIAN</button>
+        </div>
+    </div>
+
+    <!-- Exam Screen -->
+    <div id="examScreen" class="container hidden">
+        <div class="header">
+            <div>
+                <h1>📝 SKD CPNS 2025</h1>
+                <div class="subtitle">Simulasi Real - 110 Soal</div>
+            </div>
+            <div class="timer-box" id="timerBox">
+                <div class="timer-label">Sisa Waktu</div>
+                <div class="timer-value" id="timerDisplay">100:00</div>
+            </div>
+        </div>
+
+        <div class="progress-container">
+            <div class="progress-info">
+                <span id="progressText">Soal 1 dari 110</span>
+                <span id="answeredCount">Terjawab: 0/110</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="question-card">
+                <div class="question-header">
+                    <span class="question-number" id="questionNumber">Soal No. 1</span>
+                    <span class="question-category" id="questionCategory">TWK</span>
+                </div>
+                <div class="question-text" id="questionText"></div>
+                <div class="options-list" id="optionsList"></div>
+                <div class="nav-buttons">
+                    <button class="btn btn-prev" id="btnPrev" onclick="prevQuestion()">⬅ Sebelumnya</button>
+                    <button class="btn btn-flag" id="btnFlag" onclick="toggleFlag()">🚩 Tandai</button>
+                    <button class="btn btn-next" id="btnNext" onclick="nextQuestion()">Selanjutnya ➡</button>
+                </div>
+                <div style="text-align:center; margin-top:15px;">
+                    <button class="btn btn-submit" onclick="showSubmitModal()">📋 SELESAI & SUBMIT</button>
+                </div>
+            </div>
+
+            <div class="sidebar">
+                <div class="nav-panel">
+                    <h3>Navigasi Soal</h3>
+                    <div class="nav-grid" id="navGrid"></div>
+                    <div class="nav-legend">
+                        <div class="legend-item"><div class="legend-dot" style="border-color:#e0e0e0; background:white;"></div> Belum</div>
+                        <div class="legend-item"><div class="legend-dot" style="border-color:#4caf50; background:#e8f5e9;"></div> Terjawab</div>
+                        <div class="legend-item"><div class="legend-dot" style="border-color:#1a237e; background:#1a237e;"></div> Aktif</div>
+                        <div class="legend-item"><div class="legend-dot" style="border-color:#ff9800; background:#fff3e0;"></div> Ditandai</div>
+                    </div>
+                </div>
+
+                <div class="stats-panel">
+                    <h3>📊 Statistik</h3>
+                    <div class="stat-row"><span>TWK (30 soal)</span><span class="stat-value" id="statTWK">0/30</span></div>
+                    <div class="stat-row"><span>TIU (35 soal)</span><span class="stat-value" id="statTIU">0/35</span></div>
+                    <div class="stat-row"><span>TKP (45 soal)</span><span class="stat-value" id="statTKP">0/45</span></div>
+                    <div class="stat-row" style="border-top:2px solid #eee; padding-top:8px; margin-top:5px;">
+                        <span><strong>Total Terjawab</strong></span>
+                        <span class="stat-value" id="statTotal">0/110</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Result Screen -->
+    <div id="resultScreen" class="container">
+        <div class="result-screen" id="resultContent">
+            <div class="result-header">
+                <h2>📊 HASIL SIMULASI SKD</h2>
+                <div class="pass-badge" id="passBadge"></div>
+            </div>
+
+            <div class="score-cards">
+                <div class="score-card" id="cardTWK">
+                    <div class="cat-name">TWK</div>
+                    <div class="score" id="scoreTWK">0</div>
+                    <div class="passing">Passing Grade: 65</div>
+                </div>
+                <div class="score-card" id="cardTIU">
+                    <div class="cat-name">TIU</div>
+                    <div class="score" id="scoreTIU">0</div>
+                    <div class="passing">Passing Grade: 80</div>
+                </div>
+                <div class="score-card" id="cardTKP">
+                    <div class="cat-name">TKP</div>
+                    <div class="score" id="scoreTKP">0</div>
+                    <div class="passing">Passing Grade: 166</div>
+                </div>
+            </div>
+
+            <div class="total-score">
+                <div class="label">TOTAL SKOR</div>
+                <div class="value" id="totalScore">0 / 550</div>
+            </div>
+
+            <div style="text-align:center; margin:20px 0;">
+                <button class="btn btn-start" onclick="location.reload()">🔄 Ulangi Simulasi</button>
+            </div>
+
+            <div class="review-section" id="reviewSection">
+                <h3 style="margin-bottom:15px; color:#333;">📝 Review Jawaban</h3>
+                <div id="reviewList"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Submit Modal -->
+    <div class="modal-overlay" id="submitModal">
+        <div class="modal-content">
+            <h3>⚠️ Konfirmasi Submit</h3>
+            <p id="submitMessage">Apakah Anda yakin ingin menyelesaikan ujian?</p>
+            <div class="modal-buttons">
+                <button class="btn btn-prev" onclick="closeModal()">Kembali</button>
+                <button class="btn btn-submit" onclick="submitExam()">Ya, Submit!</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ==================== QUESTION DATA ====================
+        const questions = [
+            // ===== TWK (1-30) =====
+            {
+                id: 1, category: "TWK",
+                text: "Maraknya berita hoax dan disinformasi di media sosial menjadi ancaman serius bagi persatuan dan kesatuan bangsa. Informasi palsu yang sengaja disebar dapat memecah belah masyarakat, memicu konflik, dan merusak tatanan sosial.\n\nTindakan yang paling efektif untuk melawan hoax dan disinformasi adalah...",
+                options: [
+                    "Memblokir semua akun media sosial yang menyebarkan hoax dan melaporkannya kepada pihak berwajib.",
+                    "Meningkatkan literasi media digital masyarakat, mengedukasi cara memverifikasi informasi, dan aktif menyebarkan konten positif dan faktual.",
+                    "Mengabaikan berita hoax dan disinformasi karena akan hilang dengan sendirinya.",
+                    "Membuat undang-undang yang lebih ketat untuk menghukum penyebar hoax dan disinformasi dengan hukuman maksimal.",
+                    "Membatasi akses internet dan media sosial untuk mencegah penyebaran hoax dan disinformasi."
+                ],
+                answer: 1
+            },
+            {
+                id: 2, category: "TWK",
+                text: "Dalam bidang ekonomi, Indonesia memiliki potensi sumber daya alam (SDA) yang melimpah. Namun, seringkali kekayaan SDA ini belum sepenuhnya dimanfaatkan untuk kemakmuran rakyat dan justru lebih banyak dinikmati oleh pihak asing atau segelintir elit.\n\nImplementasi nasionalisme ekonomi yang paling tepat untuk mengatasi masalah ini adalah...",
+                options: [
+                    "Menerapkan kebijakan yang berpihak pada kepentingan nasional, seperti hilirisasi industri, peningkatan nilai tambah SDA di dalam negeri, dan penguatan BUMN di sektor strategis.",
+                    "Menasionalisasi semua perusahaan asing yang mengelola SDA Indonesia tanpa kompensasi.",
+                    "Membiarkan perusahaan asing mengelola SDA Indonesia sepenuhnya karena mereka lebih efisien dan profesional.",
+                    "Menghentikan eksploitasi SDA sama sekali untuk menjaga kelestarian lingkungan dan mewariskan SDA untuk generasi mendatang.",
+                    "Membagi-bagikan kekayaan SDA secara merata kepada seluruh rakyat Indonesia agar semua merasakan manfaatnya."
+                ],
+                answer: 0
+            },
+            {
+                id: 3, category: "TWK",
+                text: "Dalam sistem demokrasi, partisipasi aktif warga negara dalam proses politik adalah kunci untuk mewujudkan kepentingan nasional. Namun, seringkali partisipasi politik masyarakat masih rendah, terutama di kalangan generasi muda.\n\nUpaya yang paling tepat untuk meningkatkan partisipasi politik generasi muda adalah...",
+                options: [
+                    "Mewajibkan semua warga negara untuk mengikuti pemilu dan memberikan sanksi bagi yang tidak berpartisipasi.",
+                    "Mengadakan kampanye politik yang masif di media sosial dengan menggunakan tokoh-tokoh influencer dan selebriti.",
+                    "Meningkatkan pendidikan politik dan kesadaran kewarganegaraan sejak dini, memfasilitasi ruang partisipasi yang kreatif dan relevan bagi generasi muda, serta membangun kepercayaan terhadap sistem demokrasi.",
+                    "Menyederhanakan sistem politik dan mengurangi jumlah partai politik agar lebih mudah dipahami dan diikuti oleh generasi muda.",
+                    "Membatasi hak politik bagi generasi muda yang dianggap belum memiliki kematangan dan pengalaman politik yang cukup."
+                ],
+                answer: 2
+            },
+            {
+                id: 4, category: "TWK",
+                text: "Indonesia memiliki cita-cita luhur untuk menjadi negara maju dan berdaulat. Untuk mewujudkan cita-cita ini, diperlukan sinergi dan kerjasama dari seluruh elemen bangsa, termasuk pemerintah, masyarakat sipil, dunia usaha, dan akademisi.\n\nImplementasi nasionalisme yang paling konstruktif dalam mewujudkan cita-cita negara maju adalah...",
+                options: [
+                    "Pemerintah membuat semua keputusan dan kebijakan pembangunan secara sentralistik dan masyarakat tinggal mengikuti.",
+                    "Setiap elemen bangsa (pemerintah, masyarakat sipil, dunia usaha, akademisi) memainkan peran masing-masing secara sinergis dan saling mendukung, dengan berlandaskan pada nilai-nilai Pancasila dan kepentingan nasional.",
+                    "Masyarakat sipil dan akademisi mengkritik pemerintah secara terus-menerus tanpa memberikan solusi konstruktif.",
+                    "Dunia usaha fokus pada mencari keuntungan sebesar-besarnya tanpa memperhatikan dampak sosial dan lingkungan.",
+                    "Akademisi hanya fokus pada penelitian dan pengembangan ilmu pengetahuan tanpa terlibat dalam masalah-masalah riil bangsa."
+                ],
+                answer: 1
+            },
+            {
+                id: 5, category: "TWK",
+                text: "Perkembangan teknologi kecerdasan buatan (AI) semakin pesat dan menawarkan banyak kemudahan dalam berbagai bidang. Namun, di sisi lain, AI juga menimbulkan kekhawatiran terkait potensi hilangnya lapangan kerja manusia, bias algoritmik, dan ketergantungan pada teknologi asing.\n\nBagaimana seharusnya Indonesia menyikapi perkembangan AI ini?",
+                options: [
+                    "Menolak pengembangan AI di Indonesia karena akan menggantikan peran manusia dan mengancam kedaulatan bangsa.",
+                    "Menerima sepenuhnya perkembangan AI tanpa regulasi agar Indonesia tidak tertinggal dari negara lain.",
+                    "Mengimpor teknologi AI dari negara maju dan menggunakannya secara masif untuk meningkatkan efisiensi di semua sektor.",
+                    "Membiarkan perkembangan AI berjalan secara alami tanpa campur tangan pemerintah agar pasar bebas menentukan arah perkembangannya.",
+                    "Mendorong pengembangan AI secara nasional dengan fokus pada inovasi lokal, etika penggunaan AI, dan regulasi yang melindungi kepentingan nasional dan tenaga kerja Indonesia."
+                ],
+                answer: 4
+            },
+            {
+                id: 6, category: "TWK",
+                text: "Pandemi global COVID-19 telah menunjukkan betapa pentingnya kemandirian dan ketahanan nasional dalam bidang kesehatan. Ketergantungan pada impor vaksin, obat-obatan, dan peralatan medis dari negara lain dapat menjadi masalah serius saat krisis kesehatan global terjadi.\n\nLangkah prioritas yang harus dilakukan Indonesia untuk meningkatkan ketahanan kesehatan nasional adalah...",
+                options: [
+                    "Menutup semua pintu masuk bagi tenaga medis asing dan memprioritaskan tenaga medis lokal.",
+                    "Meningkatkan investasi dalam riset dan pengembangan bidang kesehatan dalam negeri, memproduksi vaksin dan obat-obatan sendiri, serta memperkuat sistem kesehatan masyarakat hingga pelosok negeri.",
+                    "Membeli semua kebutuhan kesehatan dari negara maju agar kualitasnya terjamin.",
+                    "Mengandalkan bantuan dan donasi dari negara lain dan organisasi internasional untuk memenuhi kebutuhan kesehatan nasional.",
+                    "Membiarkan mekanisme pasar bebas menentukan sistem kesehatan nasional tanpa intervensi pemerintah."
+                ],
+                answer: 1
+            },
+            {
+                id: 7, category: "TWK",
+                text: "Anda adalah seorang peneliti di lembaga riset pemerintah yang bertugas mengembangkan teknologi pertanian untuk meningkatkan produktivitas pangan nasional. Dalam penelitian, Anda menemukan data yang menunjukkan bahwa salah satu produk pertanian unggulan yang selama ini dipromosikan pemerintah ternyata memiliki dampak negatif terhadap lingkungan dalam jangka panjang. Publikasi data ini dapat menimbulkan kontroversi dan berpotensi menghambat program pemerintah yang sedang berjalan.\n\nSebagai peneliti yang menjunjung tinggi integritas ilmiah dan tanggung jawab publik, tindakan paling tepat yang harus Anda lakukan adalah...",
+                options: [
+                    "Menyembunyikan data tersebut dan melanjutkan penelitian pada aspek lain yang lebih positif, demi menjaga reputasi lembaga riset dan menghindari konflik dengan pemerintah.",
+                    "Memodifikasi data penelitian agar terlihat lebih positif dan sesuai dengan narasi pemerintah, sehingga hasil penelitian tetap dapat dipublikasikan tanpa menimbulkan kontroversi.",
+                    "Membatasi publikasi data penelitian tersebut hanya di kalangan internal lembaga riset, dan menunggu arahan lebih lanjut dari atasan mengenai langkah publikasi yang tepat.",
+                    "Membocorkan data penelitian tersebut kepada media massa secara anonim untuk menciptakan tekanan publik agar pemerintah segera bertindak, tanpa melalui jalur komunikasi resmi.",
+                    "Mempublikasikan data penelitian tersebut secara jujur dan transparan melalui jurnal ilmiah dan forum publik yang relevan, serta mengkomunikasikan temuan ini kepada pemerintah dan masyarakat secara bertanggung jawab."
+                ],
+                answer: 4
+            },
+            {
+                id: 8, category: "TWK",
+                text: "Dalam proses pengadaan barang dan jasa pemerintah, Anda adalah seorang pejabat pengadaan yang bertugas melakukan evaluasi terhadap penawaran dari berbagai perusahaan. Anda mendapatkan tekanan dari atasan untuk memenangkan perusahaan tertentu yang memiliki kedekatan dengan pejabat tinggi, meskipun penawaran perusahaan tersebut tidak sepenuhnya memenuhi persyaratan teknis dan harga yang ditawarkan lebih tinggi dari pesaing.\n\nSebagai pejabat pengadaan yang berintegritas, sikap paling tepat yang harus Anda tunjukkan adalah...",
+                options: [
+                    "Mengalah pada tekanan atasan dan memenangkan perusahaan tersebut demi menjaga hubungan baik dan kelancaran karir.",
+                    "Mencari celah dalam aturan pengadaan untuk membenarkan pemenangan perusahaan tersebut secara formal.",
+                    "Menghindari pengambilan keputusan secara langsung dan menyerahkan proses evaluasi sepenuhnya kepada tim teknis.",
+                    "Mengajukan pengunduran diri dari jabatan pejabat pengadaan sebagai bentuk protes terhadap tekanan yang diberikan.",
+                    "Menolak secara tegas tekanan atasan dan tetap melakukan evaluasi secara objektif dan transparan berdasarkan kriteria yang telah ditetapkan, serta siap menghadapi konsekuensi yang mungkin timbul."
+                ],
+                answer: 4
+            },
+            {
+                id: 9, category: "TWK",
+                text: "Anda adalah seorang jurnalis yang bekerja di media massa nasional. Anda mendapatkan informasi eksklusif mengenai dugaan pelanggaran etika berat yang dilakukan oleh seorang tokoh publik ternama yang selama ini dikenal sebagai sosok yang bersih dan berintegritas.\n\nSebagai jurnalis yang menjunjung tinggi integritas jurnalistik, tindakan paling tepat yang harus Anda lakukan adalah...",
+                options: [
+                    "Menunda publikasi informasi tersebut untuk sementara waktu hingga isu ini mereda dengan sendirinya.",
+                    "Mempublikasikan informasi tersebut secara sensasional dan bombastis untuk meningkatkan rating media massa.",
+                    "Membocorkan informasi tersebut kepada jurnalis lain dari media massa pesaing secara anonim.",
+                    "Melakukan verifikasi informasi secara mendalam dan berimbang dari berbagai sumber yang kredibel, serta mempublikasikan informasi tersebut secara jujur, akurat, dan bertanggung jawab, dengan tetap memperhatikan etika jurnalistik dan hak jawab tokoh publik.",
+                    "Tidak mempublikasikan informasi tersebut sama sekali demi menjaga nama baik tokoh publik."
+                ],
+                answer: 3
+            },
+            {
+                id: 10, category: "TWK",
+                text: "Dalam sebuah tim olahraga nasional yang akan berlaga di ajang internasional, Anda adalah seorang atlet yang memiliki potensi besar untuk meraih medali emas. Namun, Anda mengetahui bahwa pelatih tim memberikan perlakuan istimewa kepada atlet lain yang memiliki hubungan dekat dengan pihak manajemen.\n\nSebagai atlet yang menjunjung tinggi integritas dan semangat sportivitas, tindakan paling tepat yang harus Anda lakukan adalah...",
+                options: [
+                    "Menerima perlakuan tidak adil tersebut dengan lapang dada dan tetap fokus pada latihan sendiri.",
+                    "Membalas perlakuan tidak adil tersebut dengan cara yang sama.",
+                    "Mengkomunikasikan secara terbuka dan santun perihal perlakuan tidak adil ini kepada pelatih dan manajemen tim, serta mengajak mereka untuk berdialog dan mencari solusi bersama.",
+                    "Menghindari konfrontasi langsung dengan pelatih dan manajemen, namun secara diam-diam mencari dukungan dari atlet lain.",
+                    "Mengundurkan diri dari tim nasional sebagai bentuk protes terhadap perlakuan tidak adil tersebut."
+                ],
+                answer: 2
+            },
+            {
+                id: 11, category: "TWK",
+                text: "Di tengah pandemi global yang melanda Indonesia, pemerintah berupaya keras untuk mendistribusikan vaksin COVID-19 secara merata ke seluruh pelosok negeri. Anda adalah seorang kepala desa di daerah terpencil yang mendapatkan alokasi vaksin terbatas. Terdapat tekanan kuat dari kelompok tertentu untuk memprioritaskan vaksin bagi anggota kelompok mereka.\n\nSebagai kepala desa yang berintegritas, tindakan paling bijaksana dan adil yang harus Anda lakukan adalah...",
+                options: [
+                    "Memenuhi permintaan kelompok berpengaruh tersebut demi menjaga stabilitas sosial di desa.",
+                    "Membagi vaksin secara acak kepada warga yang mendaftar pertama kali.",
+                    "Menetapkan kriteria prioritas vaksinasi yang jelas dan transparan berdasarkan kelompok usia rentan, kondisi kesehatan, dan profesi berisiko tinggi, serta mengkomunikasikan kriteria ini secara terbuka kepada seluruh warga desa.",
+                    "Berkonsultasi secara tertutup dengan tokoh masyarakat dan pemuka agama untuk menentukan kelompok mana yang sebaiknya diprioritaskan.",
+                    "Menyimpan sebagian vaksin untuk keluarga dan kerabat terdekat sebagai bentuk antisipasi."
+                ],
+                answer: 2
+            },
+            {
+                id: 12, category: "TWK",
+                text: "Indonesia sedang berupaya meningkatkan investasi asing untuk mendorong pertumbuhan ekonomi nasional. Anda adalah seorang negosiator perdagangan. Dalam proses negosiasi, pihak negara mitra menawarkan insentif investasi yang sangat menarik, namun dengan syarat pelonggaran standar lingkungan dan ketenagakerjaan.\n\nSebagai negosiator yang berintegritas dan bertanggung jawab terhadap tujuan nasional yang berkelanjutan, sikap paling tepat yang harus Anda ambil adalah...",
+                options: [
+                    "Menerima tawaran insentif tersebut demi menarik investasi sebanyak mungkin.",
+                    "Mencari solusi kompromi yang kreatif dengan pihak negara mitra, misalnya dengan menawarkan insentif investasi yang tetap menarik namun tetap menjaga standar lingkungan dan ketenagakerjaan yang esensial.",
+                    "Menolak tawaran insentif tersebut secara tegas dan menghentikan negosiasi.",
+                    "Menerima sebagian tawaran insentif yang dianggap paling menguntungkan secara ekonomi.",
+                    "Menunda proses negosiasi untuk sementara waktu dan meminta arahan lebih lanjut dari pemerintah pusat."
+                ],
+                answer: 1
+            },
+            {
+                id: 13, category: "TWK",
+                text: "Ancaman terorisme dan radikalisme masih menjadi tantangan bagi keamanan negara. Implementasi bela negara yang paling efektif untuk mencegah penyebaran ideologi terorisme dan radikalisme di kalangan masyarakat adalah...",
+                options: [
+                    "Membentuk satuan tugas khusus untuk menindak tegas pelaku terorisme dan radikalisme.",
+                    "Mengintensifkan razia dan pengawasan terhadap kelompok-kelompok yang dicurigai radikal.",
+                    "Menutup akses internet dan media sosial yang dianggap menyebarkan konten radikal.",
+                    "Mengirimkan semua terduga teroris dan radikal ke pulau terpencil untuk diasingkan.",
+                    "Meningkatkan pemahaman agama yang moderat dan toleran, serta memperkuat nilai-nilai Pancasila sebagai ideologi bangsa."
+                ],
+                answer: 4
+            },
+            {
+                id: 14, category: "TWK",
+                text: "Kerusakan lingkungan dan bencana alam menjadi ancaman nyata bagi keberlangsungan hidup bangsa.\n\nImplementasi bela negara yang paling relevan untuk mengatasi masalah ini adalah...",
+                options: [
+                    "Menyalahkan pemerintah dan pihak industri atas kerusakan lingkungan yang terjadi.",
+                    "Melakukan aksi demonstrasi menuntut perusahaan-perusahaan yang merusak lingkungan untuk bertanggung jawab.",
+                    "Menggalang dana untuk membantu korban bencana alam dan merehabilitasi lingkungan yang rusak.",
+                    "Meningkatkan kesadaran dan partisipasi masyarakat dalam menjaga kelestarian lingkungan, serta menerapkan gaya hidup ramah lingkungan.",
+                    "Mendesak pemerintah untuk mengeluarkan undang-undang yang lebih ketat tentang perlindungan lingkungan."
+                ],
+                answer: 3
+            },
+            {
+                id: 15, category: "TWK",
+                text: "Di era digital, persaingan antar bangsa tidak hanya terjadi di bidang ekonomi dan militer, tetapi juga di bidang teknologi dan informasi.\n\nImplementasi bela negara yang paling strategis untuk menghadapi persaingan global di bidang teknologi dan informasi adalah...",
+                options: [
+                    "Meningkatkan kualitas pendidikan dan riset di bidang teknologi dan informasi, serta mengembangkan industri teknologi dalam negeri.",
+                    "Membatasi akses informasi dari luar negeri dan mempromosikan konten lokal.",
+                    "Menggunakan teknologi informasi untuk memata-matai negara lain dan mencuri informasi penting.",
+                    "Mengajak kerjasama dengan negara-negara maju untuk alih teknologi.",
+                    "Membiarkan pasar bebas teknologi informasi tanpa intervensi pemerintah."
+                ],
+                answer: 0
+            },
+            {
+                id: 16, category: "TWK",
+                text: "Semangat gotong royong dan solidaritas sosial merupakan nilai luhur bangsa Indonesia yang semakin terkikis di era modern.\n\nImplementasi bela negara yang paling relevan untuk memperkuat kembali nilai-nilai gotong royong dan solidaritas sosial di masyarakat adalah...",
+                options: [
+                    "Meningkatkan pendidikan karakter dan nilai-nilai Pancasila sejak usia dini melalui keluarga, sekolah, dan lingkungan masyarakat.",
+                    "Mewajibkan semua warga negara untuk mengikuti kegiatan kerja bakti dan gotong royong secara rutin.",
+                    "Mengadakan festival budaya dan kegiatan sosial yang melibatkan partisipasi seluruh lapisan masyarakat.",
+                    "Membuat peraturan daerah yang mewajibkan setiap desa dan kelurahan untuk mengadakan kegiatan gotong royong secara berkala.",
+                    "Mengampanyekan pentingnya gotong royong dan solidaritas sosial melalui media massa dan media sosial."
+                ],
+                answer: 0
+            },
+            {
+                id: 17, category: "TWK",
+                text: "Munculnya gerakan separatisme di berbagai daerah menjadi ancaman bagi keutuhan Negara Kesatuan Republik Indonesia (NKRI).\n\nSebagai seorang pelajar, bentuk implementasi bela negara yang paling tepat untuk meredam potensi separatisme adalah...",
+                options: [
+                    "Mempelajari sejarah perjuangan bangsa untuk menumbuhkan rasa nasionalisme yang tinggi.",
+                    "Mengikuti organisasi kemasyarakatan yang bergerak di bidang kebangsaan dan cinta tanah air.",
+                    "Melaporkan setiap aktivitas yang mencurigakan terkait separatisme kepada aparat keamanan.",
+                    "Mempersenjatai diri dan siap berperang melawan kelompok separatis jika diperlukan.",
+                    "Membangun komunikasi dan dialog yang konstruktif dengan berbagai kelompok masyarakat, termasuk yang memiliki pandangan berbeda."
+                ],
+                answer: 4
+            },
+            {
+                id: 18, category: "TWK",
+                text: "Kualitas sumber daya manusia (SDM) Indonesia masih perlu ditingkatkan agar mampu bersaing di tingkat global.\n\nImplementasi bela negara yang paling strategis untuk meningkatkan kualitas SDM bangsa adalah...",
+                options: [
+                    "Mewajibkan semua warga negara untuk mengikuti pelatihan keterampilan dan vokasi.",
+                    "Mengirimkan sebanyak mungkin pelajar dan mahasiswa ke luar negeri untuk belajar.",
+                    "Meningkatkan kualitas pendidikan di semua jenjang, serta mendorong inovasi dan riset di berbagai bidang.",
+                    "Membatasi masuknya tenaga kerja asing agar lapangan kerja tersedia untuk SDM dalam negeri.",
+                    "Memberikan beasiswa dan bantuan pendidikan hanya kepada anak-anak dari keluarga kurang mampu."
+                ],
+                answer: 2
+            },
+            {
+                id: 19, category: "TWK",
+                text: "Meningkatnya distrust publik terhadap lembaga penegak hukum menjadi tantangan serius bagi negara hukum seperti Indonesia.\n\nSebagai seorang mahasiswa hukum yang menjunjung tinggi nilai-nilai UUD 1945, tindakan paling konstruktif yang dapat Anda lakukan untuk mengembalikan kepercayaan publik terhadap lembaga penegak hukum adalah...",
+                options: [
+                    "Mengkritik kinerja lembaga penegak hukum secara terbuka di media sosial.",
+                    "Mengadakan demonstrasi besar-besaran untuk menuntut perbaikan kinerja lembaga penegak hukum.",
+                    "Mempelajari dan memahami sistem hukum Indonesia secara mendalam, serta aktif mengedukasi masyarakat tentang pentingnya supremasi hukum.",
+                    "Menghindari berurusan dengan lembaga penegak hukum sebisa mungkin.",
+                    "Membentuk organisasi mahasiswa anti korupsi yang bertugas mengawasi kinerja lembaga penegak hukum."
+                ],
+                answer: 2
+            },
+            {
+                id: 20, category: "TWK",
+                text: "Di era digital, penyebaran berita bohong (hoax) dan ujaran kebencian di media sosial semakin masif dan mengancam persatuan bangsa.\n\nJika Anda menemukan konten negatif yang berpotensi memecah belah persatuan NKRI di media sosial, tindakan yang paling tepat sesuai nilai-nilai NKRI adalah...",
+                options: [
+                    "Meneruskan konten tersebut kepada teman-teman agar mereka juga waspada.",
+                    "Membalas konten tersebut dengan komentar pedas dan provokatif.",
+                    "Mengabaikan konten tersebut karena dianggap sebagai sampah informasi.",
+                    "Mencari tahu kebenaran informasi tersebut dan melaporkan konten negatif tersebut kepada pihak berwenang atau platform media sosial.",
+                    "Membuat konten tandingan yang berisi narasi yang sama namun dengan bahasa yang lebih halus."
+                ],
+                answer: 3
+            },
+            {
+                id: 21, category: "TWK",
+                text: "Konflik antar umat beragama masih menjadi isu sensitif di Indonesia. Padahal, Bhinneka Tunggal Ika mengajarkan pentingnya toleransi dan kerukunan antar umat beragama.\n\nSebagai anggota masyarakat yang menghargai nilai-nilai Bhinneka Tunggal Ika, kegiatan paling efektif yang dapat Anda lakukan untuk memperkuat kerukunan antar umat beragama di lingkungan sekitar adalah...",
+                options: [
+                    "Mengadakan forum diskusi rutin antar tokoh agama untuk membahas perbedaan teologis.",
+                    "Mengadakan kegiatan sosial bersama yang melibatkan semua umat beragama, seperti bakti sosial, kerja bakti, atau kegiatan seni budaya.",
+                    "Membiarkan setiap agama berjalan sendiri-sendiri tanpa perlu berinteraksi.",
+                    "Mempromosikan agama sendiri secara lebih gencar agar agama lain tertarik.",
+                    "Menghindari pergaulan dengan orang yang berbeda agama."
+                ],
+                answer: 1
+            },
+            {
+                id: 22, category: "TWK",
+                text: "Kerusakan lingkungan hidup menjadi isu global yang juga dihadapi Indonesia.\n\nJika dikaitkan dengan nilai-nilai pilar negara, terutama Pancasila dan NKRI, tindakan paling bertanggung jawab yang dapat Anda lakukan sebagai warga negara untuk menjaga kelestarian lingkungan hidup adalah...",
+                options: [
+                    "Menggunakan sumber daya alam sebanyak-banyaknya untuk meningkatkan pertumbuhan ekonomi.",
+                    "Mendukung kebijakan pemerintah yang pro-lingkungan meskipun berdampak pada perlambatan pertumbuhan ekonomi.",
+                    "Mengabaikan isu lingkungan hidup karena dianggap sebagai masalah yang terlalu besar.",
+                    "Mengadakan aksi demonstrasi menentang perusahaan-perusahaan yang merusak lingkungan secara anarkis.",
+                    "Memulai perubahan dari diri sendiri dengan menerapkan gaya hidup ramah lingkungan dalam kehidupan sehari-hari dan mengajak orang lain untuk melakukan hal yang sama."
+                ],
+                answer: 4
+            },
+            {
+                id: 23, category: "TWK",
+                text: "Dalam kehidupan berbangsa dan bernegara, seringkali terjadi perbedaan pandangan politik yang tajam antar kelompok masyarakat.\n\nJika dikaitkan dengan nilai-nilai Pancasila, khususnya sila Persatuan Indonesia dan sila Kerakyatan, sikap yang paling bijaksana untuk mengatasi perbedaan pandangan politik tersebut adalah...",
+                options: [
+                    "Memaksakan pandangan politik kelompok sendiri kepada kelompok lain.",
+                    "Menghindari diskusi dan perdebatan politik dengan kelompok lain.",
+                    "Mengembangkan sikap saling menghormati perbedaan pandangan politik dan mengutamakan musyawarah untuk mencapai mufakat.",
+                    "Membentuk kelompok-kelompok politik eksklusif berdasarkan kesamaan pandangan.",
+                    "Menggunakan media sosial untuk menyerang dan mendiskreditkan kelompok politik yang berbeda."
+                ],
+                answer: 2
+            },
+            {
+                id: 24, category: "TWK",
+                text: "Globalisasi ekonomi membawa dampak positif dan negatif bagi Indonesia. Salah satu dampak negatifnya adalah potensi hilangnya kedaulatan ekonomi bangsa karena ketergantungan pada pasar global.\n\nJika dikaitkan dengan nilai-nilai UUD 1945, khususnya Pasal 33 tentang perekonomian nasional, kebijakan pemerintah yang paling strategis untuk menjaga kedaulatan ekonomi bangsa di era globalisasi adalah...",
+                options: [
+                    "Mendorong pengembangan ekonomi kerakyatan yang berbasis pada potensi sumber daya alam dan sumber daya manusia dalam negeri.",
+                    "Membuka lebar-lebar pintu investasi asing agar ekonomi Indonesia semakin maju.",
+                    "Meningkatkan impor barang-barang dari luar negeri agar masyarakat memiliki banyak pilihan.",
+                    "Mengikuti semua kebijakan ekonomi global yang ditetapkan oleh negara-negara maju.",
+                    "Menyerahkan sepenuhnya mekanisme pasar kepada kekuatan pasar bebas tanpa intervensi pemerintah."
+                ],
+                answer: 0
+            },
+            {
+                id: 25, category: "TWK",
+                text: `<div class="passage">Media sosial telah mengubah lanskap politik secara fundamental. Platform-platform ini menyediakan ruang bagi partisipasi politik yang lebih luas. Namun, di balik potensi demokratisasi ini, media sosial juga membawa dampak negatif terhadap polarisasi politik.\n\nAlgoritma media sosial cenderung memperkuat ruang gema (echo chamber) dan gelembung filter (filter bubble), di mana pengguna hanya terpapar pada informasi dan pandangan yang sesuai dengan preferensi mereka sendiri. Hal ini mempersempit spektrum perspektif yang diterima individu dan mengurangi paparan terhadap pandangan yang berbeda. Konten yang emosional dan provokatif cenderung lebih viral di media sosial, mendorong polaritas ekstrem dan mengurangi diskusi yang bernuansa.</div>\n\nBerdasarkan teks di atas, konsekuensi paling merugikan dari peran media sosial dalam konteks polarisasi politik terhadap proses demokrasi adalah...`,
+                options: [
+                    "Kampanye politik menjadi lebih personal dan terarah.",
+                    "Partisipasi politik menjadi lebih luas.",
+                    "Algoritma media sosial mempersempit spektrum perspektif dan mengurangi paparan terhadap pandangan yang berbeda.",
+                    "Media sosial memfasilitasi pengorganisasian gerakan sosial.",
+                    "Konten yang emosional dan provokatif lebih viral, mendorong polaritas ekstrem."
+                ],
+                answer: 2
+            },
+            {
+                id: 26, category: "TWK",
+                text: `<div class="passage">Perkembangan ekonomi kreatif telah menjadi mesin pertumbuhan baru di banyak negara, termasuk Indonesia. Namun, pengembangan ekonomi kreatif di Indonesia juga menghadapi sejumlah tantangan. Kurangnya perlindungan hak kekayaan intelektual (HKI) masih menjadi masalah serius, menghambat inovasi dan investasi. Kesenjangan keterampilan digital di kalangan pelaku ekonomi kreatif juga perlu diatasi.</div>\n\nBerdasarkan teks di atas, tantangan paling mendasar yang perlu diatasi untuk memastikan keberlanjutan dan daya saing ekonomi kreatif Indonesia di tingkat global adalah...`,
+                options: [
+                    "Memperluas akses pembiayaan bagi pelaku ekonomi kreatif.",
+                    "Memperkuat infrastruktur digital untuk mendukung ekosistem ekonomi kreatif.",
+                    "Meningkatkan pelatihan dan pendampingan untuk meningkatkan keterampilan.",
+                    "Memperketat persaingan global yang menuntut inovasi.",
+                    "Memperkuat perlindungan hak kekayaan intelektual (HKI) untuk mendorong inovasi dan investasi jangka panjang."
+                ],
+                answer: 4
+            },
+            {
+                id: 27, category: "TWK",
+                text: `<div class="passage">Perubahan iklim menjadi ancaman serius bagi ketahanan pangan global. Untuk mengatasi tantangan ini, diperlukan transformasi sistem pangan global yang mendasar. Pertanian berkelanjutan dan diversifikasi sumber pangan menjadi kunci untuk meningkatkan ketahanan pangan terhadap perubahan iklim.</div>\n\nBerdasarkan teks di atas, pendekatan paling komprehensif dan strategis untuk menjamin ketahanan pangan global di tengah ancaman perubahan iklim adalah...`,
+                options: [
+                    "Meningkatkan bantuan pangan darurat dan distribusi logistik.",
+                    "Mengembangkan teknologi pertanian yang tahan kekeringan.",
+                    "Mendorong negara-negara maju untuk mengurangi emisi gas rumah kaca.",
+                    "Melakukan transformasi sistem pangan global menuju pertanian berkelanjutan dan diversifikasi sumber pangan.",
+                    "Memperkuat infrastruktur pertanian dan irigasi di negara-negara berkembang."
+                ],
+                answer: 3
+            },
+            {
+                id: 28, category: "TWK",
+                text: `<div class="passage">Era digital telah membawa data pribadi menjadi komoditas berharga. Untuk mengatasi tantangan perlindungan data, diperlukan pendekatan holistik yang melibatkan regulasi yang kuat, teknologi privasi yang inovatif, literasi digital masyarakat, dan kesadaran etika dari pengembang teknologi dan organisasi yang mengelola data pribadi.</div>\n\nBerdasarkan teks di atas, pendekatan paling fundamental dan etis untuk menjamin perlindungan data pribadi di era digital yang semakin kompleks adalah...`,
+                options: [
+                    "Menerapkan regulasi pemerintah yang ketat dan hukuman berat.",
+                    "Mengembangkan teknologi enkripsi dan anonimisasi yang canggih.",
+                    "Meningkatkan literasi digital masyarakat.",
+                    "Mendorong perusahaan teknologi untuk lebih transparan.",
+                    "Membangun kesadaran etika di kalangan pengembang teknologi dan organisasi tentang pentingnya privasi sebagai hak asasi manusia."
+                ],
+                answer: 4
+            },
+            {
+                id: 29, category: "TWK",
+                text: `<div class="passage">Globalisasi telah membawa perubahan signifikan dalam rantai pasok global. Di masa depan, diversifikasi pemasok, digitalisasi rantai pasok, dan fokus pada keberlanjutan akan menjadi kunci untuk membangun rantai pasok global yang resilient, transparan, dan bertanggung jawab.</div>\n\nBerdasarkan teks di atas, strategi paling adaptif dan berorientasi masa depan bagi perusahaan untuk membangun rantai pasok yang lebih tahan terhadap disrupsi global adalah...`,
+                options: [
+                    "Memperkuat hubungan jangka panjang dengan pemasok tunggal.",
+                    "Meningkatkan investasi dalam logistik global yang lebih canggih.",
+                    "Menerapkan strategi reshoring atau nearshoring.",
+                    "Mengandalkan perjanjian perdagangan bebas.",
+                    "Melakukan diversifikasi pemasok, digitalisasi rantai pasok, dan fokus pada keberlanjutan dalam operasional."
+                ],
+                answer: 4
+            },
+            {
+                id: 30, category: "TWK",
+                text: `<div class="passage">Penerapan Kecerdasan Buatan (AI) dalam pendidikan menawarkan potensi revolusioner untuk personalisasi pembelajaran. Namun, implementasi AI dalam pendidikan juga menimbulkan kekhawatiran etika yang serius. Salah satu isu utama adalah potensi bias algoritmik. Algoritma AI dilatih menggunakan data historis, dan jika data tersebut mencerminkan ketidaksetaraan, maka AI dapat memperkuat dan melanggengkan bias tersebut.</div>\n\nBerdasarkan teks di atas, tantangan etika paling signifikan dalam penerapan AI untuk personalisasi pembelajaran adalah...`,
+                options: [
+                    "Risiko bias algoritmik yang dapat memperkuat ketidaksetaraan dan diskriminasi dalam sistem pendidikan.",
+                    "Potensi AI untuk meningkatkan efektivitas pembelajaran.",
+                    "Kemampuan AI untuk mengotomatiskan tugas-tugas administratif guru.",
+                    "Perlunya investasi besar dalam infrastruktur teknologi.",
+                    "Kekhawatiran tentang privasi data siswa."
+                ],
+                answer: 0
+            },
+            // ===== TIU (31-65) =====
+            {
+                id: 31, category: "TIU",
+                text: "SAJAK : PUISI = ADEGAN : ....",
+                options: ["FILM", "SUTRADARA", "KAMERA", "AKTOR", "SKENARIO"],
+                answer: 0
+            },
+            {
+                id: 32, category: "TIU",
+                text: "MOBIL : BENSIN = TUBUH : ....",
+                options: ["MAKANAN", "OTOT", "DARAH", "JANTUNG", "PARU-PARU"],
+                answer: 0
+            },
+            {
+                id: 33, category: "TIU",
+                text: "ARSITEK : BANGUNAN = KOMPOSER : ....",
+                options: ["MUSIK", "PIANO", "KONSER", "ORCHESTRA", "NADA"],
+                answer: 0
+            },
+            {
+                id: 34, category: "TIU",
+                text: "Semua mamalia bernapas dengan paru-paru. Semua paus adalah mamalia.\n\nKesimpulan yang paling tepat adalah...",
+                options: [
+                    "Semua hewan bernapas dengan paru-paru adalah mamalia.",
+                    "Semua paus bernapas dengan paru-paru.",
+                    "Beberapa paus tidak bernapas dengan paru-paru.",
+                    "Beberapa mamalia adalah paus.",
+                    "Paus adalah satu-satunya mamalia yang bernapas dengan paru-paru."
+                ],
+                answer: 1
+            },
+            {
+                id: 35, category: "TIU",
+                text: "Budi pergi ke sekolah atau ke pasar. Budi tidak pergi ke sekolah.\n\nKesimpulan yang paling tepat adalah...",
+                options: [
+                    "Budi mungkin pergi ke pasar.",
+                    "Budi tidak pergi ke pasar.",
+                    "Budi pergi ke kedua tempat.",
+                    "Budi pasti pergi ke pasar.",
+                    "Budi tidak pergi kemana-mana."
+                ],
+                answer: 3
+            },
+            {
+                id: 36, category: "TIU",
+                text: "Tidak ada koruptor yang jujur. Beberapa politikus itu jujur.\n\nKesimpulan yang paling tepat adalah...",
+                options: [
+                    "Beberapa politikus itu koruptor.",
+                    "Semua politikus itu koruptor.",
+                    "Tidak ada politikus yang koruptor.",
+                    "Kejujuran tidak relevan dalam politik.",
+                    "Beberapa politikus itu bukan koruptor."
+                ],
+                answer: 4
+            },
+            {
+                id: 37, category: "TIU",
+                text: "Empat siswa (W, X, Y, Z) memberikan pernyataan:\n• W: \"X berbohong.\"\n• X: \"Y jujur.\"\n• Y: \"Z berbohong.\"\n• Z: \"Saya jujur.\"\n\nJika hanya satu yang jujur, siapakah dia?",
+                options: ["W", "X", "Y", "Z", "Tidak mungkin hanya satu yang jujur"],
+                answer: 4
+            },
+            {
+                id: 38, category: "TIU",
+                text: "Tiga acara (X, Y, Z) pada hari berbeda (Senin, Rabu, Jumat). Ketentuan:\n• Jika X hari Senin, Z tidak Jumat.\n• Y sebelum X atau sesudah Z.\n• Z tidak hari Rabu.\n\nJika X hari Jumat, urutan jadwal yang mungkin adalah...",
+                options: [
+                    "X (Jumat), Y (Senin), Z (Rabu)",
+                    "Y (Senin), Z (Rabu), X (Jumat)",
+                    "Y (Rabu), Z (Senin), X (Jumat)",
+                    "Z (Senin), Y (Rabu), X (Jumat)",
+                    "X (Jumat), Z (Senin), Y (Rabu)"
+                ],
+                answer: 3
+            },
+            {
+                id: 39, category: "TIU",
+                text: "Lima siswa (A, B, C, D, E) nilai ujian berbeda. Diketahui:\n• B > A, B < C\n• D < E\n• E bukan tertinggi/terendah\n\nJika tertinggi adalah C, urutan nilai terendah ke tertinggi adalah...",
+                options: [
+                    "D, A, E, B, C",
+                    "A, D, E, B, C",
+                    "D, E, A, B, C",
+                    "A, D, B, E, C",
+                    "D, A, B, E, C"
+                ],
+                answer: 4
+            },
+            {
+                id: 40, category: "TIU",
+                text: "Enam orang (P, Q, R, S, T, U) duduk melingkar. Syarat:\n• P tidak bersebelahan Q atau R.\n• S di antara T dan U.\n\nJika T di kanan S, posisi pasti U adalah...",
+                options: ["Kiri S", "Kanan T", "Bersebelahan P", "Berseberangan Q", "Dua kursi dari R"],
+                answer: 0
+            },
+            {
+                id: 41, category: "TIU",
+                text: "Sisa pembagian 3²¹ oleh 9¹⁰ adalah....",
+                options: ["1", "3", "5", "7", "9"],
+                answer: 1
+            },
+            {
+                id: 42, category: "TIU",
+                text: "Hasil dari [(2/3 × 40% × 8) / (0,25 × 0,5)]² × (2/3 × 40% × 8) / (0,25 × 0,5) adalah...",
+                options: ["0,02250", "0,15000", "0,16875", "0,33750", "0,67500"],
+                answer: 2
+            },
+            {
+                id: 43, category: "TIU",
+                text: "1/(1×2) + 1/(2×3) + 1/(3×4) + 1/(4×5) = ....",
+                options: ["0,67", "0,7", "0,75", "0,77", "0,8"],
+                answer: 4
+            },
+            {
+                id: 44, category: "TIU",
+                text: "(0,4% × 0,5%) / (0,1% × 0,2% × 0,3%) = ....",
+                options: ["3,333333", "33,33333", "333,3333", "3333,333", "3333,33"],
+                answer: 3
+            },
+            {
+                id: 45, category: "TIU",
+                text: "Jika 1/a - 1/b = 7 dan 1/a + 1/b = 3, maka nilai 1/a² - 1/b² adalah....",
+                options: ["4", "7", "10", "16", "21"],
+                answer: 4
+            },
+            {
+                id: 46, category: "TIU",
+                text: "3, 7, 17, 38, 84, ....",
+                options: ["181", "179", "177", "173", "170"],
+                answer: 2
+            },
+            {
+                id: 47, category: "TIU",
+                text: "9, 3, 3, 24, 1, 96, 31, 192, 91, ....",
+                options: ["384", "324", "272", "216", "192"],
+                answer: 4
+            },
+            {
+                id: 48, category: "TIU",
+                text: "41, 37, 35, 35, 31, 29, 29, ...",
+                options: ["33", "31", "29", "27", "25"],
+                answer: 4
+            },
+            {
+                id: 49, category: "TIU",
+                text: "A, F, G, L, M, R, S, ....",
+                options: ["Z", "Y", "X", "U", "T"],
+                answer: 2
+            },
+            {
+                id: 50, category: "TIU",
+                text: "5, 7, 15, 19, 33, 39, ....",
+                options: ["59, 67", "59, 65", "57, 65", "55, 65", "55, 63"],
+                answer: 0
+            },
+            {
+                id: 51, category: "TIU",
+                text: "Jika x = -√6, y = √(6y), dan z = 6y, maka pernyataan yang benar adalah....\n\n(Keterangan: x = -√6, y = √6, z = 6×√6)",
+                options: ["x = z", "z = -x - y", "y² = x + z", "2y = x - z", "x/y = y/z"],
+                answer: 0
+            },
+            {
+                id: 52, category: "TIU",
+                text: "Jika y = (1/66 - 1/67) dan x = (1/65 - 1/68), maka....",
+                options: ["y > x", "y < x", "y = x", "y ≥ x", "y ≤ x"],
+                answer: 1
+            },
+            {
+                id: 53, category: "TIU",
+                text: "1/x = xy = y². Jika y merupakan bilangan negatif, maka....",
+                options: ["x ≥ 0", "x < 0", "x = y", "2x < 3y", "Hubungan antara x dan y tidak dapat ditentukan"],
+                answer: 1
+            },
+            {
+                id: 54, category: "TIU",
+                text: "Jika x² - 43 = 200 dan y = 6x + 20, maka pernyataan berikut yang benar adalah....",
+                options: [
+                    "x > y untuk semua nilai x",
+                    "x > y jika x bilangan positif",
+                    "x < y jika x bilangan positif",
+                    "3x > 2y untuk semua nilai x",
+                    "x dan y tidak dapat ditentukan"
+                ],
+                answer: 1
+            },
+            {
+                id: 55, category: "TIU",
+                text: "Jika x/2 : 4 = 5 dan y = (2/5)⁴, maka....",
+                options: ["x < y", "x > y", "x = y", "2x < 3y", "Hubungan antara x dan y tidak dapat ditentukan"],
+                answer: 2
+            },
+            {
+                id: 56, category: "TIU",
+                text: "Jarak permukaan air Sungai Cilimung dengan bibir sungai setinggi 95 cm. Untuk mengatasi masalah banjir, diperintahkan pengerukan dasar sungai dengan target 5 cm tiap 15 menit. Setiap sekali pengerukan, pekerja harus beristirahat 5 menit. Setiap tiga kali pengerukan, mesin harus diistirahatkan 10 menit. Pada saat bersamaan terjadi hujan deras selama 2 jam yang mengakibatkan naiknya permukaan air 1 cm per menit.\n\nApa yang akan terjadi di daerah sekitar Sungai Cilimung?",
+                options: [
+                    "Terjadi banjir 105 menit sejak hujan turun",
+                    "Terjadi banjir 100 menit sejak hujan turun",
+                    "Terjadi banjir setinggi 10 cm",
+                    "Terjadi banjir setinggi 5 cm",
+                    "Tidak terjadi banjir"
+                ],
+                answer: 4
+            },
+            {
+                id: 57, category: "TIU",
+                text: "Sebuah buku didiskon 2 kali berturut-turut, yaitu 20% dan x%. Jika diskon total menjadi 36%, maka x adalah....",
+                options: ["20", "17", "15", "12", "10"],
+                answer: 0
+            },
+            {
+                id: 58, category: "TIU",
+                text: "Selisih antara bilangan terbesar dan terkecil dari bilangan yang terbentuk dari 3 digit angka yang dapat dibuat sehingga habis dibagi 7 adalah....",
+                options: ["890", "889", "888", "887", "886"],
+                answer: 1
+            },
+            {
+                id: 59, category: "TIU",
+                text: "Diketahui jumlah n bilangan positif genap yang pertama adalah 272. Dari bilangan-bilangan genap tersebut, jumlah lima bilangan terakhirnya adalah....",
+                options: ["150", "140", "130", "120", "110"],
+                answer: 1
+            },
+            {
+                id: 60, category: "TIU",
+                text: "Pedagang jamu mempunyai lemari yang hanya cukup ditempati untuk 40 boks jamu. Dengan modal Rp300.000 ia membeli jamu A dan jamu B masing-masing seharga Rp6.000 dan Rp8.000 setiap boks. Jika harga jual tiap boks jamu A Rp6.500 dan jamu B Rp8.800, keuntungan maksimum yang diperoleh adalah....",
+                options: ["Rp29.600", "Rp29.000", "Rp26.000", "Rp23.000", "Rp30.000"],
+                answer: 4
+            },
+            {
+                id: 61, category: "TIU",
+                text: "[Soal Gambar - Pola Visual]\n\nJumlah sisi elemen luar bertambah satu dan jumlah ruas garis di dalam elemen luar berkurang satu.\n\nPilih jawaban yang melanjutkan pola:",
+                options: ["Opsi A - Segi lima dengan 2 garis dalam", "Opsi B - Segi enam dengan 3 garis dalam", "Opsi C - Segi empat dengan 4 garis dalam", "Opsi D - Segi lima dengan 4 garis dalam", "Opsi E - Segi enam dengan 2 garis dalam"],
+                answer: 0
+            },
+            {
+                id: 62, category: "TIU",
+                text: "[Soal Gambar - Rotasi]\n\nGambar berotasi 90°. Ruas garis kecil yang tegak lurus dengan garis yang lebih panjang dihilangkan jika ada dan ditempatkan jika tidak ada.\n\nPilih jawaban yang tepat:",
+                options: ["Opsi A", "Opsi B", "Opsi C", "Opsi D", "Opsi E"],
+                answer: 1
+            },
+            {
+                id: 63, category: "TIU",
+                text: "[Soal Gambar - Pola Elemen]\n\nHanya pada satu gambar, dua dari tiga elemen merupakan elemen yang serupa.\n\nPilih gambar yang berbeda:",
+                options: ["Opsi A", "Opsi B", "Opsi C", "Opsi D", "Opsi E"],
+                answer: 2
+            },
+            {
+                id: 64, category: "TIU",
+                text: "[Soal Gambar - Seri]\n\nGambar yang sama berulang pada setiap tahap kedua. Setiap kali sebuah gambar tertentu muncul kembali, gambar tersebut berotasi 90° searah jarum jam, serta segitiga dan kepala panah membalik arah mereka.\n\nPilih gambar selanjutnya:",
+                options: ["Opsi A", "Opsi B", "Opsi C", "Opsi D", "Opsi E"],
+                answer: 4
+            },
+            {
+                id: 65, category: "TIU",
+                text: "[Soal Gambar - Matriks]\n\nElemen-elemen mengambil posisi secara bergantian dan digantikan elemen-elemen baru secara beruntun.\n\nPilih jawaban yang tepat:",
+                options: ["Opsi A", "Opsi B", "Opsi C", "Opsi D", "Opsi E"],
+                answer: 1
+            },
+            // ===== TKP (66-110) =====
+            {
+                id: 66, category: "TKP",
+                text: "Anda adalah seorang petugas layanan pelanggan di sebuah perusahaan air minum daerah. Seorang pelanggan menelepon untuk melaporkan bahwa air di rumahnya keruh dan berbau.\n\nBagaimana Anda merespons keluhan pelanggan tersebut?",
+                options: [
+                    "Mencatat laporan pelanggan dan berjanji akan menyampaikan ke bagian teknis.",
+                    "Mencatat laporan, memberikan nomor laporan, dan menginformasikan perkiraan waktu penanganan.",
+                    "Mencatat laporan, memberikan nomor laporan, menginformasikan waktu penanganan, memberikan tips, dan menawarkan kompensasi jika masalah tidak segera teratasi.",
+                    "Mengatakan bahwa mungkin pipa di rumah pelanggan yang bermasalah, bukan dari perusahaan.",
+                    "Mencatat laporan, memberikan nomor laporan, menginformasikan waktu penanganan, dan memberikan tips sementara untuk mengatasi masalah."
+                ],
+                scores: [2, 3, 5, 1, 4]
+            },
+            {
+                id: 67, category: "TKP",
+                text: "Anda adalah seorang petugas di pusat layanan informasi publik. Seorang jurnalis datang untuk meminta data tentang anggaran penanganan COVID-19 di daerah Anda. Ia membawa surat tugas resmi dari media tempatnya bekerja.\n\nBagaimana Anda menanggapi permintaan jurnalis tersebut?",
+                options: [
+                    "Meminta jurnalis untuk mengajukan permintaan tertulis, menjelaskan prosedur pengajuan data, dan memberikan perkiraan waktu penyediaan data.",
+                    "Meminta jurnalis untuk mengajukan permintaan tertulis, menjelaskan prosedur, memberikan perkiraan waktu, dan memberikan informasi tentang data yang tersedia secara publik.",
+                    "Meminta jurnalis untuk mengajukan permintaan secara tertulis dan menunggu persetujuan dari atasan.",
+                    "Meminta jurnalis untuk mengajukan permintaan tertulis, menjelaskan prosedur, memberikan perkiraan waktu, memberikan informasi publik, dan membantu jurnalis menemukan data yang relevan.",
+                    "Menolak permintaan jurnalis, karena data tersebut bersifat rahasia."
+                ],
+                scores: [3, 4, 2, 5, 1]
+            },
+            {
+                id: 68, category: "TKP",
+                text: "Anda bekerja di bagian perizinan sebuah dinas penanaman modal. Seorang pengusaha datang untuk mengajukan izin usaha baru. Ia membawa dokumen yang lengkap, tetapi Anda menemukan ada satu persyaratan yang tidak sesuai dengan peraturan terbaru.\n\nBagaimana Anda menangani situasi ini?",
+                options: [
+                    "Menjelaskan persyaratan, memberikan informasi tentang cara memenuhi persyaratan, dan menawarkan bantuan jika diperlukan.",
+                    "Menjelaskan persyaratan, membantu, memberikan informasi tentang alternatif solusi jika persyaratan sulit dipenuhi, dan memberikan prioritas pelayanan setelah persyaratan lengkap.",
+                    "Menolak pengajuan izin usaha tersebut karena tidak sesuai dengan peraturan.",
+                    "Menjelaskan kepada pengusaha tentang persyaratan yang tidak sesuai dan meminta untuk dilengkapi.",
+                    "Menjelaskan persyaratan, membantu, memberikan alternatif solusi, memberikan prioritas, dan memberikan nomor kontak untuk konsultasi lanjutan."
+                ],
+                scores: [3, 4, 1, 2, 5]
+            },
+            {
+                id: 69, category: "TKP",
+                text: "Anda adalah seorang petugas di bagian pengaduan konsumen sebuah badan perlindungan konsumen. Seorang konsumen datang untuk melaporkan bahwa ia telah membeli produk palsu dari seorang pedagang online.\n\nBagaimana Anda merespons laporan konsumen tersebut?",
+                options: [
+                    "Mencatat laporan konsumen dan menyarankan untuk melaporkan hal ini ke polisi.",
+                    "Mencatat laporan, membantu, memberikan informasi, dan melakukan mediasi antara konsumen dan pedagang jika memungkinkan.",
+                    "Mencatat laporan, memberikan informasi tentang hak-hak konsumen, dan menjelaskan prosedur pengaduan.",
+                    "Mencatat laporan, memberikan informasi, menjelaskan prosedur, dan membantu konsumen untuk menyusun surat pengaduan.",
+                    "Menyatakan bahwa pembelian secara online memiliki resiko sendiri dan badan perlindungan konsumen tidak dapat membantu."
+                ],
+                scores: [2, 5, 3, 4, 1]
+            },
+            {
+                id: 70, category: "TKP",
+                text: "Anda adalah seorang petugas di bagian pelayanan publik sebuah kantor pemerintah daerah. Seorang warga datang untuk meminta informasi tentang program bantuan sosial. Ia adalah seorang penyandang disabilitas dan tampak kesulitan berkomunikasi.\n\nBagaimana Anda membantu warga tersebut?",
+                options: [
+                    "Berbicara perlahan dan menggunakan bahasa yang sederhana.",
+                    "Menggunakan bahasa isyarat, memberikan informasi, memberikan formulir, dan menawarkan bantuan untuk mengisi formulir jika diperlukan.",
+                    "Meminta warga tersebut untuk datang bersama pendamping.",
+                    "Menggunakan bahasa isyarat jika Anda memahaminya, atau mencari rekan kerja yang bisa berbahasa isyarat.",
+                    "Menggunakan bahasa isyarat, memberikan informasi tentang program bantuan sosial, dan memberikan formulir pendaftaran dalam format yang mudah dibaca."
+                ],
+                scores: [2, 5, 1, 3, 4]
+            },
+            {
+                id: 71, category: "TKP",
+                text: "Anda adalah seorang guru di sebuah sekolah menengah kejuruan. Seorang siswa datang menemui Anda dengan keluhan bahwa ia mengalami kesulitan dalam mengikuti pelajaran praktik. Ia merasa tidak memiliki bakat di bidang tersebut.\n\nBagaimana Anda merespons keluhan siswa tersebut?",
+                options: [
+                    "Mengatakan bahwa tidak semua orang memiliki bakat di semua bidang dan siswa harus menerima kenyataan.",
+                    "Mendengarkan keluhan, memberikan motivasi, memberikan bimbingan, dan memberikan informasi tentang program pengembangan bakat di sekolah.",
+                    "Mencatat keluhan siswa dan berjanji akan memberikan perhatian lebih di kelas.",
+                    "Mendengarkan keluhan siswa dengan empati, memberikan motivasi, dan memberikan bimbingan tambahan jika diperlukan.",
+                    "Mendengarkan keluhan, memberikan motivasi, memberikan bimbingan, memberikan informasi, dan membantu siswa untuk menemukan bidang yang sesuai dengan minat dan bakatnya."
+                ],
+                scores: [1, 4, 2, 3, 5]
+            },
+            {
+                id: 72, category: "TKP",
+                text: "Anda adalah seorang petugas di bagian informasi publik sebuah rumah sakit. Seorang keluarga pasien datang untuk meminta informasi tentang kondisi pasien yang sedang dirawat di ruang ICU. Ia tampak cemas dan khawatir.\n\nBagaimana Anda merespons permintaan keluarga pasien tersebut?",
+                options: [
+                    "Memberikan informasi, menjelaskan istilah medis, memberikan jadwal kunjungan, memberikan dukungan psikologis, dan membantu keluarga pasien untuk berkomunikasi dengan dokter yang merawat.",
+                    "Mengatakan bahwa informasi hanya bisa diberikan kepada keluarga inti saja.",
+                    "Memberikan informasi tentang kondisi pasien sesuai dengan catatan medis yang tersedia.",
+                    "Memberikan informasi, menjelaskan istilah-istilah medis yang sulit dipahami, dan memberikan informasi tentang jadwal kunjungan ke ruang ICU.",
+                    "Memberikan informasi, menjelaskan istilah medis, memberikan jadwal kunjungan, dan memberikan informasi tentang dukungan psikologis yang tersedia."
+                ],
+                scores: [5, 1, 2, 3, 4]
+            },
+            {
+                id: 73, category: "TKP",
+                text: "Anda bekerja sebagai petugas di bagian informasi sebuah museum sejarah. Seorang pengunjung datang untuk mencari informasi tentang artefak tertentu yang dipajang di museum. Namun, artefak tersebut sedang dalam proses konservasi dan tidak dapat dilihat oleh publik.\n\nBagaimana Anda menangani situasi ini?",
+                options: [
+                    "Mengatakan kepada pengunjung bahwa artefak tersebut tidak tersedia untuk dilihat dan memintanya untuk melihat artefak lain.",
+                    "Menjelaskan, memberikan informasi tentang proses konservasi, dan memberikan informasi tentang artefak lain yang memiliki tema serupa.",
+                    "Menjelaskan, memberikan informasi, memberikan informasi tentang artefak serupa, dan memberikan informasi tentang perkiraan waktu artefak tersebut akan tersedia kembali.",
+                    "Mengatakan bahwa informasi artefak yang sedang dikonservasi adalah rahasia dan tidak dapat diberitahukan.",
+                    "Menjelaskan kepada pengunjung bahwa artefak tersebut sedang dikonservasi dan akan tersedia untuk dilihat di masa mendatang."
+                ],
+                scores: [2, 4, 5, 1, 3]
+            },
+            {
+                id: 74, category: "TKP",
+                text: "Anda adalah seorang ASN yang ditugaskan untuk memimpin tim yang terdiri dari individu-individu dengan berbagai latar belakang dan tingkat pengalaman yang berbeda.\n\nBagaimana Anda akan menciptakan lingkungan kerja yang inklusif dan kolaboratif?",
+                options: [
+                    "Menetapkan aturan dan prosedur yang ketat untuk memastikan semua anggota tim bekerja sesuai standar.",
+                    "Memperlakukan semua anggota tim secara sama tanpa memperhatikan perbedaan latar belakang dan pengalaman.",
+                    "Memfasilitasi sesi berbagi pengalaman dan pengetahuan antar anggota tim.",
+                    "Membentuk kelompok-kelompok kecil berdasarkan tingkat pengalaman untuk meningkatkan efisiensi kerja.",
+                    "Membiarkan anggota tim bekerja secara mandiri dan hanya memberikan arahan jika diperlukan."
+                ],
+                scores: [2, 3, 5, 4, 1]
+            },
+            {
+                id: 75, category: "TKP",
+                text: "Anda adalah seorang ASN yang ditugaskan untuk membangun jejaring kerja dengan para pemangku kepentingan di tingkat internasional. Namun, Anda menyadari bahwa Anda memiliki keterbatasan dalam kemampuan berbahasa asing.\n\nBagaimana Anda akan mengatasi hambatan ini?",
+                options: [
+                    "Menggunakan jasa penerjemah saat berinteraksi dengan pemangku kepentingan internasional.",
+                    "Memfokuskan diri pada pemangku kepentingan yang berbahasa Indonesia atau Inggris.",
+                    "Mengikuti kursus bahasa asing intensif untuk meningkatkan kemampuan komunikasi.",
+                    "Menggunakan aplikasi penerjemah daring saat berkomunikasi.",
+                    "Menghindari interaksi dengan pemangku kepentingan internasional yang tidak berbahasa Indonesia."
+                ],
+                scores: [4, 3, 5, 2, 1]
+            },
+            {
+                id: 76, category: "TKP",
+                text: "Anda adalah seorang ASN yang memiliki tugas untuk mengkoordinasikan program pemberdayaan masyarakat di daerah terpencil. Anda menyadari bahwa partisipasi masyarakat dalam program tersebut masih rendah.\n\nBagaimana Anda akan meningkatkan partisipasi masyarakat?",
+                options: [
+                    "Menyelenggarakan sosialisasi program secara besar-besaran dengan menggunakan bahasa yang formal.",
+                    "Meminta tokoh masyarakat untuk mengajak warga berpartisipasi dalam program.",
+                    "Mengadakan diskusi kelompok terfokus dengan melibatkan perwakilan dari berbagai kelompok masyarakat untuk memahami kebutuhan dan aspirasi mereka.",
+                    "Memberikan insentif kepada masyarakat yang berpartisipasi dalam program.",
+                    "Membiarkan masyarakat berpartisipasi secara sukarela tanpa memberikan intervensi khusus."
+                ],
+                scores: [2, 3, 5, 4, 1]
+            },
+            {
+                id: 77, category: "TKP",
+                text: "Anda adalah seorang ASN yang ditugaskan untuk mengembangkan inovasi pelayanan publik. Anda memiliki ide untuk menggunakan teknologi kecerdasan buatan (AI) untuk meningkatkan efisiensi pelayanan. Namun, Anda menyadari bahwa penggunaan AI menimbulkan kekhawatiran tentang keamanan data dan privasi masyarakat.\n\nBagaimana Anda akan mengatasi kekhawatiran tersebut?",
+                options: [
+                    "Mengabaikan kekhawatiran tersebut dan tetap melanjutkan pengembangan inovasi.",
+                    "Menyosialisasikan manfaat penggunaan AI tanpa membahas risiko yang mungkin timbul.",
+                    "Melakukan kajian risiko dan menyusun langkah-langkah mitigasi untuk mengatasi kekhawatiran tentang keamanan data dan privasi.",
+                    "Menggunakan AI hanya untuk tugas-tugas yang tidak melibatkan data sensitif masyarakat.",
+                    "Meminta ahli keamanan siber untuk memberikan jaminan keamanan data sebelum melanjutkan."
+                ],
+                scores: [1, 2, 5, 3, 4]
+            },
+            {
+                id: 78, category: "TKP",
+                text: "Anda adalah seorang ASN yang ditugaskan untuk membangun jejaring kerja dengan media massa. Anda menyadari bahwa media massa memiliki peran penting dalam menyebarkan informasi tentang kebijakan publik.\n\nBagaimana Anda akan membangun hubungan yang baik dengan media massa?",
+                options: [
+                    "Memberikan informasi hanya kepada media massa yang memiliki hubungan baik dengan instansi Anda.",
+                    "Membangun komunikasi yang terbuka dan transparan dengan media massa, serta memberikan informasi yang akurat dan tepat waktu.",
+                    "Mengadakan konferensi pers secara rutin untuk menyampaikan informasi tentang kebijakan publik.",
+                    "Menggunakan media sosial untuk menyebarkan informasi tanpa melibatkan media massa.",
+                    "Membatasi akses media massa ke informasi tentang kebijakan publik."
+                ],
+                scores: [2, 5, 3, 4, 1]
+            },
+            {
+                id: 79, category: "TKP",
+                text: "Anda adalah seorang ASN yang ditugaskan untuk memfasilitasi kerjasama antar daerah dalam pengelolaan sumber daya alam. Anda menyadari bahwa antar daerah memiliki perbedaan kepentingan dan prioritas.\n\nBagaimana Anda akan mengatasi perbedaan tersebut?",
+                options: [
+                    "Membangun kesepahaman antar daerah melalui dialog yang konstruktif dan fokus pada kepentingan bersama.",
+                    "Membiarkan masing-masing daerah mengelola sumber daya alam sesuai dengan kepentingannya.",
+                    "Mengadakan pertemuan rutin antar daerah untuk membahas pengelolaan sumber daya alam.",
+                    "Membentuk tim ahli independen untuk memberikan rekomendasi.",
+                    "Menggunakan pendekatan top-down dengan menetapkan kebijakan yang berlaku untuk semua daerah."
+                ],
+                scores: [5, 1, 2, 4, 3]
+            },
+            {
+                id: 80, category: "TKP",
+                text: "Anda adalah seorang ASN yang aktif dalam jejaring kerja internasional. Anda menyadari bahwa jejaring kerja internasional dapat memberikan manfaat yang besar bagi pengembangan karir Anda.\n\nBagaimana Anda akan memanfaatkan jejaring kerja internasional untuk pengembangan karir Anda?",
+                options: [
+                    "Hanya berinteraksi dengan anggota jejaring kerja internasional yang memiliki posisi lebih tinggi.",
+                    "Mengikuti kegiatan jejaring kerja internasional secara pasif tanpa terlibat aktif.",
+                    "Memanfaatkan jejaring kerja internasional untuk mencari informasi tentang peluang kerja di luar negeri.",
+                    "Menggunakan jejaring kerja internasional hanya untuk mempromosikan diri sendiri.",
+                    "Membangun hubungan yang baik dengan anggota jejaring kerja internasional, berbagi pengetahuan dan pengalaman, serta mencari peluang kolaborasi."
+                ],
+                scores: [2, 3, 4, 1, 5]
+            },
+            {
+                id: 81, category: "TKP",
+                text: "Anda adalah seorang ASN yang ditugaskan untuk membangun jejaring kerja dengan komunitas disabilitas. Anda menyadari bahwa komunitas disabilitas memiliki kebutuhan dan aspirasi yang beragam.\n\nBagaimana Anda akan memastikan bahwa jejaring kerja yang Anda bangun inklusif dan responsif terhadap kebutuhan tersebut?",
+                options: [
+                    "Mengadakan pertemuan rutin dengan perwakilan dari berbagai kelompok disabilitas untuk mendengarkan aspirasi mereka.",
+                    "Membentuk tim kerja yang terdiri dari perwakilan dari berbagai kelompok disabilitas untuk merancang program yang inklusif.",
+                    "Menggunakan bahasa yang mudah dipahami dan menyediakan aksesibilitas dalam setiap kegiatan jejaring kerja.",
+                    "Mengadakan survei untuk mengidentifikasi kebutuhan dan aspirasi komunitas disabilitas.",
+                    "Mengundang tokoh-tokoh disabilitas untuk berbicara dalam acara-acara jejaring kerja."
+                ],
+                scores: [5, 4, 3, 2, 1]
+            },
+            {
+                id: 82, category: "TKP",
+                text: "Di daerah dengan tingkat kemiskinan yang tinggi, terdapat praktik eksploitasi anak yang melanggar hak asasi manusia.\n\nSebagai ASN yang menjunjung tinggi nilai kemanusiaan, langkah yang paling mendesak adalah...",
+                options: [
+                    "Mengadakan sosialisasi tentang bahaya eksploitasi anak, tanpa memberikan perlindungan konkret.",
+                    "Membentuk tim khusus yang terdiri dari berbagai instansi terkait untuk melakukan penegakan hukum dan memberikan perlindungan kepada anak-anak yang menjadi korban eksploitasi.",
+                    "Memberikan bantuan keuangan kepada keluarga yang rentan agar tidak mengeksploitasi anak-anak mereka.",
+                    "Mengadakan dialog dengan pelaku eksploitasi anak untuk mencari solusi yang saling menguntungkan.",
+                    "Melaporkan kasus eksploitasi anak kepada pihak berwajib, tanpa memberikan pendampingan kepada korban."
+                ],
+                scores: [2, 5, 3, 1, 4]
+            },
+            {
+                id: 83, category: "TKP",
+                text: "Dalam pembangunan daerah, terdapat ketegangan antara pelestarian lingkungan dan pengembangan ekonomi.\n\nSebagai ASN yang bijaksana, pendekatan yang paling tepat adalah...",
+                options: [
+                    "Memprioritaskan pengembangan ekonomi tanpa memperhatikan dampak lingkungan.",
+                    "Memprioritaskan pelestarian lingkungan tanpa memperhatikan kebutuhan ekonomi masyarakat.",
+                    "Menerapkan konsep pembangunan berkelanjutan yang mengintegrasikan aspek ekonomi, sosial, dan lingkungan, serta melibatkan partisipasi aktif masyarakat.",
+                    "Mengadakan studi kelayakan untuk menilai dampak lingkungan dari setiap proyek pembangunan.",
+                    "Mengadopsi teknologi ramah lingkungan dalam setiap proyek pembangunan."
+                ],
+                scores: [1, 2, 5, 3, 4]
+            },
+            {
+                id: 84, category: "TKP",
+                text: "Di era globalisasi, budaya asing semakin mudah masuk dan memengaruhi gaya hidup generasi muda.\n\nSebagai ASN yang peduli terhadap identitas budaya bangsa, strategi yang paling efektif adalah...",
+                options: [
+                    "Melarang masuknya budaya asing untuk melindungi budaya lokal.",
+                    "Mengadakan festival budaya lokal secara rutin.",
+                    "Mengintegrasikan nilai-nilai budaya lokal ke dalam kurikulum pendidikan dan media massa, serta mempromosikan produk budaya lokal di pasar global.",
+                    "Mengadakan dialog antara generasi muda dan tokoh budaya.",
+                    "Mengadopsi budaya asing yang dianggap positif dan sesuai dengan nilai-nilai budaya bangsa."
+                ],
+                scores: [1, 3, 5, 5, 4]
+            },
+            {
+                id: 85, category: "TKP",
+                text: "Di sebuah daerah dengan tingkat keragaman agama yang tinggi, sering terjadi gesekan antar kelompok agama akibat perbedaan interpretasi ajaran.\n\nSebagai ASN yang bertugas menjaga kerukunan, tindakan yang paling tepat adalah...",
+                options: [
+                    "Mengadakan forum dialog antar tokoh agama secara rutin untuk membahas perbedaan ajaran dan mencari titik temu.",
+                    "Membentuk tim patroli gabungan dari berbagai kelompok agama.",
+                    "Mengadakan festival budaya yang menampilkan kesenian dari berbagai kelompok agama.",
+                    "Mengimbau masyarakat untuk tidak membahas perbedaan ajaran agama di tempat umum.",
+                    "Membiarkan gesekan antar kelompok agama mereda dengan sendirinya."
+                ],
+                scores: [5, 4, 3, 2, 1]
+            },
+            {
+                id: 86, category: "TKP",
+                text: "Di era digital, banyak generasi muda yang lebih tertarik pada budaya populer asing daripada budaya tradisional.\n\nSebagai ASN yang peduli terhadap pelestarian budaya bangsa, strategi yang paling efektif adalah...",
+                options: [
+                    "Mengadakan festival budaya tradisional yang menampilkan pertunjukan seni dan kuliner khas daerah.",
+                    "Mengintegrasikan unsur budaya tradisional ke dalam konten media sosial yang populer di kalangan generasi muda.",
+                    "Mengadakan kompetisi pembuatan konten digital yang mengangkat tema budaya tradisional.",
+                    "Melarang generasi muda untuk mengakses konten budaya populer asing.",
+                    "Mengadakan seminar tentang pentingnya melestarikan budaya tradisional."
+                ],
+                scores: [4, 3, 5, 1, 2]
+            },
+            {
+                id: 87, category: "TKP",
+                text: "Di sebuah daerah dengan tingkat kemiskinan yang tinggi, banyak anak-anak yang putus sekolah dan bekerja di sektor informal.\n\nSebagai ASN yang peduli terhadap pendidikan dan kesejahteraan anak, tindakan yang paling mendesak adalah...",
+                options: [
+                    "Memberikan bantuan keuangan kepada keluarga miskin agar anak-anak mereka dapat kembali bersekolah.",
+                    "Membangun sekolah-sekolah gratis di daerah-daerah terpencil.",
+                    "Mengadakan program pelatihan keterampilan bagi anak-anak putus sekolah agar mereka dapat bekerja dengan layak.",
+                    "Mengadakan sosialisasi tentang pentingnya pendidikan bagi anak-anak.",
+                    "Membiarkan anak-anak bekerja di sektor informal karena dianggap sebagai tradisi keluarga."
+                ],
+                scores: [4, 3, 5, 2, 1]
+            },
+            {
+                id: 88, category: "TKP",
+                text: "Dalam pembangunan sebuah proyek infrastruktur, terdapat konflik antara pemerintah dan masyarakat adat terkait kepemilikan lahan.\n\nSebagai ASN yang bertugas menyelesaikan konflik, pendekatan yang paling tepat adalah...",
+                options: [
+                    "Mengadakan mediasi antara pemerintah dan masyarakat adat dengan melibatkan pihak ketiga yang netral.",
+                    "Membentuk tim negosiasi yang terdiri dari perwakilan pemerintah dan masyarakat adat.",
+                    "Mengadakan konsultasi publik untuk membahas dampak proyek infrastruktur.",
+                    "Melanjutkan proyek infrastruktur dengan memberikan kompensasi kepada masyarakat adat.",
+                    "Mengabaikan keberatan masyarakat adat dan melanjutkan proyek infrastruktur sesuai rencana."
+                ],
+                scores: [5, 4, 3, 2, 1]
+            },
+            {
+                id: 89, category: "TKP",
+                text: "Anda ingin meningkatkan kemampuan TIK Anda untuk mendukung pekerjaan.\n\nSumber belajar TIK mana yang paling efektif dan relevan untuk ASN?",
+                options: [
+                    "Mencari tutorial di YouTube tentang topik TIK yang diminati.",
+                    "Mengikuti kursus online gratis tentang keterampilan digital umum.",
+                    "Mengikuti pelatihan TIK yang diselenggarakan oleh kantor atau lembaga pemerintah yang fokus pada kebutuhan ASN.",
+                    "Membaca buku-buku tentang TIK dasar untuk pemula.",
+                    "Bertanya kepada teman yang lebih ahli TIK setiap kali ada kesulitan."
+                ],
+                scores: [3, 4, 5, 2, 1]
+            },
+            {
+                id: 90, category: "TKP",
+                text: "Anda diminta untuk membuat presentasi laporan kinerja kantor.\n\nFitur TIK apa yang dapat Anda manfaatkan untuk membuat presentasi yang lebih menarik dan efektif?",
+                options: [
+                    "Menggunakan template presentasi standar dan teks berwarna-warni.",
+                    "Menambahkan animasi sederhana agar presentasi tidak membosankan.",
+                    "Menggunakan grafik, infografis, dan visualisasi data untuk menyajikan informasi secara jelas dan menarik.",
+                    "Hanya menggunakan teks dan bullet points agar informasi padat dan ringkas.",
+                    "Menambahkan musik latar agar presentasi lebih hidup."
+                ],
+                scores: [2, 3, 5, 1, 4]
+            },
+            {
+                id: 91, category: "TKP",
+                text: "Anda ingin mengumpulkan data dari masyarakat untuk keperluan survei kebijakan publik.\n\nMetode pengumpulan data online mana yang paling efisien dan efektif untuk menjangkau banyak responden?",
+                options: [
+                    "Mengirim email survei satu per satu ke alamat email yang diketahui.",
+                    "Membuat formulir survei online (misalnya, Google Forms, SurveyMonkey) dan menyebarkannya melalui media sosial dan website pemerintah.",
+                    "Melakukan survei telepon kepada masyarakat secara acak.",
+                    "Menyebarkan kuesioner cetak dan mengumpulkannya secara manual.",
+                    "Mengadakan focus group discussion online dengan perwakilan masyarakat."
+                ],
+                scores: [2, 5, 3, 1, 4]
+            },
+            {
+                id: 92, category: "TKP",
+                text: "Anda perlu mengadakan rapat penting dengan rekan kerja yang sedang dinas di luar kota.\n\nPlatform TIK apa yang paling tepat untuk mengadakan rapat tersebut?",
+                options: [
+                    "Rapat melalui telepon konferensi.",
+                    "Rapat melalui email dengan mengirimkan agenda dan catatan rapat.",
+                    "Menunda rapat hingga semua rekan kerja kembali ke kantor.",
+                    "Rapat hybrid, sebagian rekan hadir fisik dan sebagian online.",
+                    "Rapat video conference (misalnya, Zoom, Google Meet) yang memungkinkan interaksi tatap muka virtual dan berbagi layar."
+                ],
+                scores: [3, 2, 1, 4, 5]
+            },
+            {
+                id: 93, category: "TKP",
+                text: "Anda menemukan berita hoax yang beredar di media sosial tentang instansi pemerintah tempat Anda bekerja.\n\nBagaimana Anda sebaiknya bertindak?",
+                options: [
+                    "Mengabaikannya saja karena hoax akan hilang dengan sendirinya.",
+                    "Ikut menyebarkan hoax tersebut untuk tujuan tertentu.",
+                    "Membantah hoax tersebut di media sosial pribadi dengan emosi.",
+                    "Melaporkan hoax tersebut kepada tim humas atau unit terkait di kantor untuk ditindaklanjuti dengan klarifikasi resmi.",
+                    "Mendiskusikan hoax tersebut dengan rekan kerja di grup chat kantor."
+                ],
+                scores: [2, 1, 3, 5, 4]
+            },
+            {
+                id: 94, category: "TKP",
+                text: "Anda ingin mencari informasi peraturan terbaru pemerintah terkait bidang pekerjaan Anda.\n\nSumber informasi TIK mana yang paling kredibel dan terpercaya?",
+                options: [
+                    "Website resmi lembaga pemerintah terkait (misalnya, website kementerian, lembaga negara).",
+                    "Blog pribadi yang membahas isu-isu pemerintahan.",
+                    "Artikel berita online dari media massa umum.",
+                    "Forum diskusi online tentang kebijakan publik.",
+                    "Postingan media sosial dari tokoh masyarakat atau influencer."
+                ],
+                scores: [5, 2, 3, 1, 4]
+            },
+            {
+                id: 95, category: "TKP",
+                text: "Anda perlu membuat laporan keuangan kantor menggunakan aplikasi spreadsheet.\n\nFitur TIK apa yang paling penting untuk Anda kuasai agar pembuatan laporan lebih efisien dan akurat?",
+                options: [
+                    "Fitur desain tampilan spreadsheet agar laporan terlihat menarik.",
+                    "Fitur formula dan fungsi spreadsheet untuk perhitungan otomatis dan analisis data.",
+                    "Fitur import dan export data ke format file lain.",
+                    "Fitur kolaborasi real-time dengan rekan kerja.",
+                    "Fitur proteksi password untuk keamanan file spreadsheet."
+                ],
+                scores: [1, 5, 3, 4, 2]
+            },
+            {
+                id: 96, category: "TKP",
+                text: "Anda sedang bekerja dalam tim yang anggotanya memiliki tingkat pemahaman teknologi yang berbeda-beda. Beberapa anggota tim senior kurang familiar dengan aplikasi atau sistem kerja baru yang diterapkan.\n\nTindakan paling profesional Anda untuk membantu tim beradaptasi dengan teknologi baru adalah...",
+                options: [
+                    "Membiarkan anggota tim senior beradaptasi sendiri dan fokus membantu anggota tim junior.",
+                    "Menawarkan bantuan dan bimbingan secara sabar dan personal kepada anggota tim senior untuk mempelajari teknologi baru, serta berbagi tips dan trik praktis.",
+                    "Mengeluh dan menganggap anggota tim senior lambat beradaptasi.",
+                    "Meminta atasan untuk mengganti anggota tim senior dengan staf yang lebih muda.",
+                    "Menggunakan teknologi baru hanya jika diperlukan dan tetap mengandalkan cara kerja manual."
+                ],
+                scores: [2, 5, 1, 3, 4]
+            },
+            {
+                id: 97, category: "TKP",
+                text: "Anda menerima hadiah atau gratifikasi dari pihak yang Anda layani sebagai ASN, meskipun tidak ada maksud terselubung atau paksaan dari pihak manapun.\n\nSikap paling profesional yang sebaiknya Anda tunjukkan terhadap hadiah atau gratifikasi tersebut adalah...",
+                options: [
+                    "Menerima hadiah tersebut dengan senang hati sebagai bentuk apresiasi atas pelayanan Anda.",
+                    "Menerima hadiah tersebut namun tidak melaporkannya kepada atasan karena nilainya tidak terlalu besar.",
+                    "Menerima hadiah tersebut dan melaporkannya kepada atasan sesuai dengan prosedur yang berlaku.",
+                    "Menolak hadiah tersebut secara halus dan sopan, serta menjelaskan bahwa sebagai ASN Anda tidak diperbolehkan menerima gratifikasi.",
+                    "Menerima hadiah tersebut namun berusaha memberikan balasan atau timbal balik yang setimpal."
+                ],
+                scores: [1, 2, 4, 5, 3]
+            },
+            {
+                id: 98, category: "TKP",
+                text: "Anda melakukan kesalahan dalam pekerjaan yang berpotensi menimbulkan kerugian kecil bagi organisasi. Kesalahan tersebut tidak disengaja dan baru Anda sadari setelah beberapa waktu.\n\nTindakan paling profesional yang sebaiknya Anda lakukan setelah menyadari kesalahan tersebut adalah...",
+                options: [
+                    "Menyembunyikan kesalahan tersebut dan berharap tidak ada yang menyadarinya.",
+                    "Menceritakan kesalahan tersebut kepada rekan kerja terdekat untuk mencari dukungan.",
+                    "Mengakui kesalahan tersebut kepada atasan secara jujur dan terbuka, serta bertanggung jawab untuk mencari solusi perbaikan dan mencegah kesalahan serupa terulang.",
+                    "Mencari alasan atau pembenaran untuk kesalahan tersebut.",
+                    "Menyalahkan sistem atau faktor eksternal atas kesalahan yang terjadi."
+                ],
+                scores: [1, 2, 5, 3, 4]
+            },
+            {
+                id: 99, category: "TKP",
+                text: "Anda melihat adanya potensi inovasi atau perbaikan dalam sistem kerja di unit Anda yang dapat meningkatkan efisiensi dan kualitas pelayanan. Namun, ide inovasi Anda tersebut berbeda dengan kebiasaan atau prosedur yang sudah berjalan lama.\n\nLangkah paling profesional yang sebaiknya Anda lakukan adalah...",
+                options: [
+                    "Langsung menerapkan inovasi tersebut secara diam-diam tanpa memberitahu atasan.",
+                    "Mengurungkan niat untuk berinovasi karena khawatir akan menimbulkan masalah.",
+                    "Mendiskusikan ide inovasi tersebut dengan rekan kerja terdekat untuk mendapatkan dukungan.",
+                    "Mempresentasikan ide inovasi tersebut kepada atasan dengan data dan argumentasi yang kuat, serta menjelaskan manfaat dan dampak positifnya bagi organisasi.",
+                    "Mengajukan ide inovasi tersebut secara tertulis kepada atasan namun tidak aktif memperjuangkannya."
+                ],
+                scores: [2, 1, 3, 5, 4]
+            },
+            {
+                id: 100, category: "TKP",
+                text: "Anda menerima kritik atau masukan negatif dari masyarakat atau pihak lain terkait kinerja pelayanan instansi Anda. Kritik tersebut disampaikan secara terbuka melalui media sosial.\n\nRespons paling profesional yang sebaiknya Anda tunjukkan terhadap kritik tersebut adalah...",
+                options: [
+                    "Menghapus atau menyensor kritik tersebut dari media sosial.",
+                    "Mengabaikan kritik tersebut dan menganggapnya sebagai opini yang tidak berdasar.",
+                    "M
