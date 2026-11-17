@@ -25,108 +25,39 @@
             border-radius: 8px; padding: 10px 20px; text-align: center;
         }
         .timer-box.warning { background: #fff3e0; border-color: #ff9800; }
-        .timer-box.danger {
-            background: #ffebee; border-color: #f44336;
-            animation: pulse 1s infinite;
-        }
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
+        .timer-box.danger { background: #ffebee; border-color: #f44336; animation: pulse 1s infinite; }
+        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
         .timer-label { font-size: 0.75em; color: #666; text-transform: uppercase; }
-        .timer-value {
-            font-size: 1.8em; font-weight: bold; color: #2e7d32;
-            font-family: 'Courier New', monospace;
-        }
+        .timer-value { font-size: 1.8em; font-weight: bold; color: #2e7d32; font-family: 'Courier New', monospace; }
         .timer-box.warning .timer-value { color: #e65100; }
         .timer-box.danger .timer-value { color: #c62828; }
         .progress-container {
             background: white; border-radius: 12px; padding: 15px 25px;
             margin-bottom: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.15);
         }
-        .progress-info {
-            display: flex; justify-content: space-between;
-            margin-bottom: 8px; font-size: 0.85em; color: #555;
-        }
-        .progress-bar {
-            height: 8px; background: #e0e0e0;
-            border-radius: 4px; overflow: hidden;
-        }
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #4caf50, #8bc34a);
-            border-radius: 4px; transition: width 0.3s ease;
-        }
-        .main-content {
-            display: grid; grid-template-columns: 1fr 280px; gap: 20px;
-        }
-        @media (max-width: 900px) {
-            .main-content { grid-template-columns: 1fr; }
-        }
-        .question-card {
-            background: white; border-radius: 12px; padding: 30px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-        }
-        .question-header {
-            display: flex; justify-content: space-between; align-items: center;
-            margin-bottom: 20px; padding-bottom: 15px;
-            border-bottom: 2px solid #e3f2fd;
-        }
+        .progress-info { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.85em; color: #555; }
+        .progress-bar { height: 8px; background: #e0e0e0; border-radius: 4px; overflow: hidden; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, #4caf50, #8bc34a); border-radius: 4px; transition: width 0.3s ease; }
+        .main-content { display: grid; grid-template-columns: 1fr 280px; gap: 20px; }
+        @media (max-width: 900px) { .main-content { grid-template-columns: 1fr; } }
+        .question-card { background: white; border-radius: 12px; padding: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.15); }
+        .question-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 2px solid #e3f2fd; }
         .question-number { font-size: 1.1em; font-weight: bold; color: #1a237e; }
-        .question-category {
-            font-size: 0.8em; padding: 4px 12px;
-            border-radius: 20px; font-weight: 600;
-        }
+        .question-category { font-size: 0.8em; padding: 4px 12px; border-radius: 20px; font-weight: 600; }
         .cat-twk { background: #e3f2fd; color: #1565c0; }
         .cat-tiu { background: #f3e5f5; color: #7b1fa2; }
         .cat-tkp { background: #e8f5e9; color: #2e7d32; }
-        .question-text {
-            font-size: 1em; line-height: 1.7; margin-bottom: 25px;
-            color: #2c3e50; white-space: pre-line;
-        }
-        .question-text .passage {
-            background: #f8f9fa; border-left: 4px solid #1a237e;
-            padding: 15px; margin: 15px 0;
-            border-radius: 0 8px 8px 0; font-size: 0.92em; line-height: 1.6;
-        }
+        .question-text { font-size: 1em; line-height: 1.7; margin-bottom: 25px; color: #2c3e50; white-space: pre-line; }
+        .question-text .passage { background: #f8f9fa; border-left: 4px solid #1a237e; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; font-size: 0.92em; line-height: 1.6; }
         .options-list { display: flex; flex-direction: column; gap: 12px; }
-        .option-item {
-            display: flex; align-items: flex-start; padding: 14px 18px;
-            border: 2px solid #e0e0e0; border-radius: 10px;
-            cursor: pointer; transition: all 0.2s ease; gap: 12px;
-        }
-        .option-item:hover {
-            border-color: #90caf9; background: #f5f9ff;
-            transform: translateX(4px);
-        }
-        .option-item.selected {
-            border-color: #1a237e; background: #e8eaf6;
-            box-shadow: 0 2px 8px rgba(26,35,126,0.15);
-        }
-        .option-letter {
-            min-width: 32px; height: 32px; border-radius: 50%;
-            background: #f5f5f5; display: flex; align-items: center;
-            justify-content: center; font-weight: bold; font-size: 0.9em;
-            color: #555; flex-shrink: 0;
-        }
-        .option-item.selected .option-letter {
-            background: #1a237e; color: white;
-        }
-        .option-text {
-            font-size: 0.95em; line-height: 1.5;
-            color: #444; padding-top: 4px;
-        }
-        .nav-buttons {
-            display: flex; justify-content: space-between;
-            margin-top: 25px; padding-top: 20px;
-            border-top: 1px solid #eee;
-        }
-        .btn {
-            padding: 12px 24px; border: none; border-radius: 8px;
-            font-size: 0.95em; font-weight: 600; cursor: pointer;
-            transition: all 0.2s ease; display: flex;
-            align-items: center; gap: 8px;
-        }
+        .option-item { display: flex; align-items: flex-start; padding: 14px 18px; border: 2px solid #e0e0e0; border-radius: 10px; cursor: pointer; transition: all 0.2s ease; gap: 12px; }
+        .option-item:hover { border-color: #90caf9; background: #f5f9ff; transform: translateX(4px); }
+        .option-item.selected { border-color: #1a237e; background: #e8eaf6; box-shadow: 0 2px 8px rgba(26,35,126,0.15); }
+        .option-letter { min-width: 32px; height: 32px; border-radius: 50%; background: #f5f5f5; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 0.9em; color: #555; flex-shrink: 0; }
+        .option-item.selected .option-letter { background: #1a237e; color: white; }
+        .option-text { font-size: 0.95em; line-height: 1.5; color: #444; padding-top: 4px; }
+        .nav-buttons { display: flex; justify-content: space-between; margin-top: 25px; padding-top: 20px; border-top: 1px solid #eee; }
+        .btn { padding: 12px 24px; border: none; border-radius: 8px; font-size: 0.95em; font-weight: 600; cursor: pointer; transition: all 0.2s ease; display: flex; align-items: center; gap: 8px; }
         .btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
         .btn:active { transform: translateY(0); }
         .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
@@ -136,90 +67,46 @@
         .btn-flag.flagged { background: #ff9800; color: white; }
         .btn-submit { background: #c62828; color: white; padding: 12px 30px; }
         .btn-start { background: #1a237e; color: white; padding: 15px 40px; font-size: 1.1em; }
-        .btn-reset { background: #757575; color: white; }
         .sidebar { display: flex; flex-direction: column; gap: 15px; }
-        .nav-panel {
-            background: white; border-radius: 12px; padding: 20px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-        }
-        .nav-panel h3 {
-            font-size: 0.9em; color: #555; margin-bottom: 12px;
-            text-transform: uppercase; letter-spacing: 0.5px;
-        }
-        .nav-grid {
-            display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px;
-        }
-        .nav-item {
-            width: 100%; aspect-ratio: 1; border: 2px solid #e0e0e0;
-            border-radius: 6px; display: flex; align-items: center;
-            justify-content: center; font-size: 0.75em; font-weight: 600;
-            cursor: pointer; transition: all 0.2s ease; color: #666;
-        }
+        .nav-panel { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.15); }
+        .nav-panel h3 { font-size: 0.9em; color: #555; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .nav-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; }
+        .nav-item { width: 100%; aspect-ratio: 1; border: 2px solid #e0e0e0; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 0.75em; font-weight: 600; cursor: pointer; transition: all 0.2s ease; color: #666; }
         .nav-item:hover { border-color: #90caf9; background: #e3f2fd; }
         .nav-item.current { border-color: #1a237e; background: #1a237e; color: white; }
         .nav-item.answered { border-color: #4caf50; background: #e8f5e9; color: #2e7d32; }
         .nav-item.flagged { border-color: #ff9800; background: #fff3e0; color: #e65100; }
         .nav-item.answered.flagged { border-color: #ff9800; background: #fff8e1; }
-        .nav-legend {
-            margin-top: 12px; display: flex; flex-wrap: wrap;
-            gap: 8px; font-size: 0.72em;
-        }
+        .nav-legend { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 8px; font-size: 0.72em; }
         .legend-item { display: flex; align-items: center; gap: 4px; }
-        .legend-dot {
-            width: 12px; height: 12px; border-radius: 3px; border: 2px solid;
-        }
-        .stats-panel {
-            background: white; border-radius: 12px; padding: 20px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-        }
+        .legend-dot { width: 12px; height: 12px; border-radius: 3px; border: 2px solid; }
+        .stats-panel { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.15); }
         .stats-panel h3 { font-size: 0.9em; color: #555; margin-bottom: 12px; }
-        .stat-row {
-            display: flex; justify-content: space-between; padding: 6px 0;
-            font-size: 0.85em; border-bottom: 1px solid #f0f0f0;
-        }
+        .stat-row { display: flex; justify-content: space-between; padding: 6px 0; font-size: 0.85em; border-bottom: 1px solid #f0f0f0; }
         .stat-row:last-child { border-bottom: none; }
         .stat-value { font-weight: bold; }
-        .start-screen {
-            background: white; border-radius: 16px; padding: 50px;
-            text-align: center; box-shadow: 0 8px 40px rgba(0,0,0,0.2);
-            max-width: 700px; margin: 40px auto;
-        }
+        .start-screen { background: white; border-radius: 16px; padding: 50px; text-align: center; box-shadow: 0 8px 40px rgba(0,0,0,0.2); max-width: 700px; margin: 40px auto; }
         .start-screen h1 { color: #1a237e; font-size: 2em; margin-bottom: 10px; }
         .start-screen .logo { font-size: 4em; margin-bottom: 20px; }
-        .start-screen .info-grid {
-            display: grid; grid-template-columns: repeat(3, 1fr);
-            gap: 15px; margin: 30px 0; text-align: center;
-        }
+        .start-screen .info-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin: 30px 0; text-align: center; }
         .info-item { background: #f5f5f5; padding: 15px; border-radius: 10px; }
         .info-item .label { font-size: 0.8em; color: #666; margin-bottom: 5px; }
         .info-item .value { font-size: 1.2em; font-weight: bold; color: #1a237e; }
-        .rules-list {
-            text-align: left; margin: 25px 0; padding: 20px;
-            background: #fffde7; border-radius: 10px; border: 1px solid #fff59d;
-        }
+        .rules-list { text-align: left; margin: 25px 0; padding: 20px; background: #fffde7; border-radius: 10px; border: 1px solid #fff59d; }
         .rules-list h3 { color: #f57f17; margin-bottom: 10px; font-size: 0.95em; }
         .rules-list li { margin: 8px 0; font-size: 0.88em; color: #555; margin-left: 20px; }
-        .result-screen {
-            display: none; background: white; border-radius: 16px;
-            padding: 40px; box-shadow: 0 8px 40px rgba(0,0,0,0.2);
-            max-width: 900px; margin: 30px auto;
-        }
+        
+        /* FIXED: CSS Result Screen */
+        #resultScreen { display: none; }
+        .result-screen { background: white; border-radius: 16px; padding: 40px; box-shadow: 0 8px 40px rgba(0,0,0,0.2); max-width: 900px; margin: 30px auto; }
+        
         .result-header { text-align: center; margin-bottom: 30px; }
         .result-header h2 { color: #1a237e; font-size: 1.8em; }
-        .result-header .pass-badge {
-            display: inline-block; padding: 8px 25px; border-radius: 25px;
-            font-weight: bold; font-size: 1.1em; margin-top: 10px;
-        }
+        .result-header .pass-badge { display: inline-block; padding: 8px 25px; border-radius: 25px; font-weight: bold; font-size: 1.1em; margin-top: 10px; }
         .pass-badge.lulus { background: #e8f5e9; color: #2e7d32; border: 2px solid #4caf50; }
         .pass-badge.tidak-lulus { background: #ffebee; color: #c62828; border: 2px solid #f44336; }
-        .score-cards {
-            display: grid; grid-template-columns: repeat(3, 1fr);
-            gap: 15px; margin: 25px 0;
-        }
-        .score-card {
-            text-align: center; padding: 20px; border-radius: 12px;
-            border: 2px solid #e0e0e0;
-        }
+        .score-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin: 25px 0; }
+        .score-card { text-align: center; padding: 20px; border-radius: 12px; border: 2px solid #e0e0e0; }
         .score-card .cat-name { font-size: 0.85em; color: #666; margin-bottom: 5px; }
         .score-card .score { font-size: 2em; font-weight: bold; }
         .score-card .passing { font-size: 0.75em; color: #999; margin-top: 5px; }
@@ -227,128 +114,49 @@
         .score-card.pass .score { color: #2e7d32; }
         .score-card.fail { border-color: #f44336; background: #fce4ec; }
         .score-card.fail .score { color: #c62828; }
-        .total-score {
-            text-align: center; padding: 20px; background: #e8eaf6;
-            border-radius: 12px; margin: 20px 0;
-        }
+        .total-score { text-align: center; padding: 20px; background: #e8eaf6; border-radius: 12px; margin: 20px 0; }
         .total-score .label { font-size: 0.9em; color: #555; }
         .total-score .value { font-size: 2.5em; font-weight: bold; color: #1a237e; }
-        .review-section {
-            margin-top: 30px; max-height: 700px; overflow-y: auto;
-            border: 1px solid #e0e0e0; border-radius: 10px; padding: 20px;
-        }
-        .review-item {
-            padding: 15px; border-bottom: 1px solid #f0f0f0;
-            margin-bottom: 10px; border-radius: 8px;
-            background: #fafafa;
-        }
+        .review-section { margin-top: 30px; max-height: 700px; overflow-y: auto; border: 1px solid #e0e0e0; border-radius: 10px; padding: 20px; }
+        .review-item { padding: 15px; border-bottom: 1px solid #f0f0f0; margin-bottom: 10px; border-radius: 8px; background: #fafafa; }
         .review-item:last-child { border-bottom: none; }
-        .review-item .q-header {
-            display: flex; justify-content: space-between;
-            align-items: center; margin-bottom: 10px;
-        }
-        .review-item .q-num {
-            font-weight: bold; color: #1a237e; font-size: 1.05em;
-        }
-        .review-item .q-cat {
-            font-size: 0.75em; padding: 3px 10px;
-            border-radius: 12px; font-weight: 600;
-        }
-        .review-item .q-text {
-            color: #2c3e50; margin-bottom: 12px; line-height: 1.6;
-            white-space: pre-line;
-        }
-        .review-item .q-text .passage {
-            background: #f8f9fa; border-left: 4px solid #1a237e;
-            padding: 10px; margin: 10px 0;
-            border-radius: 0 6px 6px 0; font-size: 0.92em;
-        }
-        /* FIXED: Styling untuk pilihan jawaban di review */
-        .review-item .review-options {
-            display: flex; flex-direction: column; gap: 6px;
-            margin-bottom: 12px;
-        }
-        .review-item .review-option {
-            display: flex; align-items: flex-start; gap: 10px;
-            padding: 8px 12px; border-radius: 6px;
-            background: white; border: 1px solid #e0e0e0;
-            font-size: 0.92em; line-height: 1.5;
-        }
-        .review-item .review-option .opt-letter {
-            font-weight: bold; color: #666;
-            min-width: 20px; flex-shrink: 0;
-        }
-        .review-item .review-option.user-answer {
-            background: #fff3e0; border-color: #ff9800;
-            border-width: 2px;
-        }
+        .review-item .q-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .review-item .q-num { font-weight: bold; color: #1a237e; font-size: 1.05em; }
+        .review-item .q-cat { font-size: 0.75em; padding: 3px 10px; border-radius: 12px; font-weight: 600; }
+        .review-item .q-text { color: #2c3e50; margin-bottom: 12px; line-height: 1.6; white-space: pre-line; }
+        .review-item .q-text .passage { background: #f8f9fa; border-left: 4px solid #1a237e; padding: 10px; margin: 10px 0; border-radius: 0 6px 6px 0; font-size: 0.92em; }
+        .review-item .review-options { display: flex; flex-direction: column; gap: 6px; margin-bottom: 12px; }
+        .review-item .review-option { display: flex; align-items: flex-start; gap: 10px; padding: 8px 12px; border-radius: 6px; background: white; border: 1px solid #e0e0e0; font-size: 0.92em; line-height: 1.5; }
+        .review-item .review-option .opt-letter { font-weight: bold; color: #666; min-width: 20px; flex-shrink: 0; }
+        .review-item .review-option.user-answer { background: #fff3e0; border-color: #ff9800; border-width: 2px; }
         .review-item .review-option.user-answer .opt-letter { color: #e65100; }
-        .review-item .review-option.user-correct {
-            background: #e8f5e9; border-color: #4caf50;
-            border-width: 2px;
-        }
+        .review-item .review-option.user-correct { background: #e8f5e9; border-color: #4caf50; border-width: 2px; }
         .review-item .review-option.user-correct .opt-letter { color: #2e7d32; }
-        .review-item .review-option.correct-answer {
-            background: #e3f2fd; border-color: #2196f3;
-            border-width: 2px;
-        }
+        .review-item .review-option.correct-answer { background: #e3f2fd; border-color: #2196f3; border-width: 2px; }
         .review-item .review-option.correct-answer .opt-letter { color: #1565c0; }
-        .review-item .answer-badge {
-            display: inline-block; padding: 3px 10px; border-radius: 12px;
-            font-size: 0.75em; font-weight: 600; margin-left: 6px;
-        }
+        .review-item .answer-badge { display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 0.75em; font-weight: 600; margin-left: 6px; }
         .review-item .badge-your { background: #ffebee; color: #c62828; }
         .review-item .badge-your.correct { background: #e8f5e9; color: #2e7d32; }
         .review-item .badge-key { background: #e3f2fd; color: #1565c0; }
-        .review-item .score-info {
-            display: flex; gap: 15px; margin-bottom: 10px;
-            flex-wrap: wrap; font-size: 0.9em;
-        }
-        .review-item .score-info span {
-            padding: 4px 12px; border-radius: 6px; font-weight: 600;
-        }
+        .review-item .score-info { display: flex; gap: 15px; margin-bottom: 10px; flex-wrap: wrap; font-size: 0.9em; }
+        .review-item .score-info span { padding: 4px 12px; border-radius: 6px; font-weight: 600; }
         .review-item .score-info .your-score { background: #fff3e0; color: #e65100; }
         .review-item .score-info .best-score { background: #e3f2fd; color: #1565c0; }
-        .review-item .explanation {
-            background: #fffde7; border-left: 3px solid #ffc107;
-            padding: 12px 15px; border-radius: 0 6px 6px 0;
-            font-size: 0.92em; line-height: 1.6; color: #444;
-        }
+        .review-item .explanation { background: #fffde7; border-left: 3px solid #ffc107; padding: 12px 15px; border-radius: 0 6px 6px 0; font-size: 0.92em; line-height: 1.6; color: #444; }
         .review-item .explanation strong { color: #1a237e; }
-        .filter-tabs {
-            display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap;
-        }
-        .filter-tab {
-            padding: 8px 16px; border: 2px solid #e0e0e0;
-            border-radius: 20px; cursor: pointer; font-size: 0.85em;
-            font-weight: 600; transition: all 0.2s ease;
-            background: white; user-select: none;
-        }
+        .filter-tabs { display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap; }
+        .filter-tab { padding: 8px 16px; border: 2px solid #e0e0e0; border-radius: 20px; cursor: pointer; font-size: 0.85em; font-weight: 600; transition: all 0.2s ease; background: white; user-select: none; }
         .filter-tab:hover { border-color: #90caf9; background: #e3f2fd; }
-        .filter-tab.active {
-            background: #1a237e; color: white; border-color: #1a237e;
-        }
-        .modal-overlay {
-            display: none; position: fixed; top: 0; left: 0;
-            width: 100%; height: 100%; background: rgba(0,0,0,0.6);
-            z-index: 1000; justify-content: center; align-items: center;
-        }
-        .modal-content {
-            background: white; border-radius: 16px; padding: 35px;
-            max-width: 450px; width: 90%; text-align: center;
-        }
+        .filter-tab.active { background: #1a237e; color: white; border-color: #1a237e; }
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 1000; justify-content: center; align-items: center; }
+        .modal-content { background: white; border-radius: 16px; padding: 35px; max-width: 450px; width: 90%; text-align: center; }
         .modal-content h3 { color: #c62828; margin-bottom: 15px; }
         .modal-content p { color: #555; margin-bottom: 20px; font-size: 0.95em; }
         .modal-buttons { display: flex; gap: 12px; justify-content: center; }
         @media (max-width: 600px) {
-            .container { padding: 10px; }
-            .header { padding: 15px; }
-            .question-card { padding: 20px; }
-            .start-screen { padding: 30px 20px; }
-            .start-screen .info-grid { grid-template-columns: 1fr; }
-            .score-cards { grid-template-columns: 1fr; }
-            .nav-grid { grid-template-columns: repeat(5, 1fr); }
-            .result-screen { padding: 20px; }
+            .container { padding: 10px; } .header { padding: 15px; } .question-card { padding: 20px; }
+            .start-screen { padding: 30px 20px; } .start-screen .info-grid { grid-template-columns: 1fr; }
+            .score-cards { grid-template-columns: 1fr; } .nav-grid { grid-template-columns: repeat(5, 1fr); } .result-screen { padding: 20px; }
         }
         .hidden { display: none !important; }
         ::-webkit-scrollbar { width: 6px; }
@@ -358,7 +166,6 @@
     </style>
 </head>
 <body>
-    <!-- Start Screen -->
     <div id="startScreen" class="container">
         <div class="start-screen">
             <div class="logo">🏛️</div>
@@ -372,47 +179,30 @@
             <div class="rules-list">
                 <h3>📋 Ketentuan Ujian:</h3>
                 <ul>
-                    <li><strong>TWK</strong> (Tes Wawasan Kebangsaan): 30 soal, passing grade 65</li>
-                    <li><strong>TIU</strong> (Tes Intelegensia Umum): 35 soal, passing grade 80</li>
-                    <li><strong>TKP</strong> (Tes Karakteristik Pribadi): 45 soal, passing grade 166</li>
+                    <li><strong>TWK</strong>: 30 soal, passing grade 65</li>
+                    <li><strong>TIU</strong>: 35 soal, passing grade 80</li>
+                    <li><strong>TKP</strong>: 45 soal, passing grade 166</li>
                     <li>Skor TWK & TIU: Benar = 5, Salah/Kosong = 0</li>
-                    <li>Skor TKP: 1-5 per soal (tidak ada skor 0 kecuali tidak dijawab)</li>
-                    <li>Waktu pengerjaan: 100 menit</li>
-                    <li>Soal dapat ditandai untuk dilihat kembali</li>
-                    <li><strong>📝 Pembahasan lengkap akan muncul setelah submit!</strong></li>
+                    <li>Skor TKP: 1-5 per soal</li>
+                    <li><strong>📝 Pembahasan lengkap muncul setelah submit!</strong></li>
                 </ul>
             </div>
             <button class="btn btn-start" onclick="startExam()">🚀 MULAI UJIAN</button>
         </div>
     </div>
 
-    <!-- Exam Screen -->
     <div id="examScreen" class="container hidden">
         <div class="header">
-            <div>
-                <h1>📝 SKD CPNS 2025</h1>
-                <div class="subtitle">Simulasi Real - 110 Soal + Pembahasan</div>
-            </div>
-            <div class="timer-box" id="timerBox">
-                <div class="timer-label">Sisa Waktu</div>
-                <div class="timer-value" id="timerDisplay">100:00</div>
-            </div>
+            <div><h1>📝 SKD CPNS 2025</h1><div class="subtitle">Simulasi Real - 110 Soal</div></div>
+            <div class="timer-box" id="timerBox"><div class="timer-label">Sisa Waktu</div><div class="timer-value" id="timerDisplay">100:00</div></div>
         </div>
         <div class="progress-container">
-            <div class="progress-info">
-                <span id="progressText">Soal 1 dari 110</span>
-                <span id="answeredCount">Terjawab: 0/110</span>
-            </div>
-            <div class="progress-bar">
-                <div class="progress-fill" id="progressFill" style="width: 0%"></div>
-            </div>
+            <div class="progress-info"><span id="progressText">Soal 1 dari 110</span><span id="answeredCount">Terjawab: 0/110</span></div>
+            <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width: 0%"></div></div>
         </div>
         <div class="main-content">
             <div class="question-card">
-                <div class="question-header">
-                    <span class="question-number" id="questionNumber">Soal No. 1</span>
-                    <span class="question-category" id="questionCategory">TWK</span>
-                </div>
+                <div class="question-header"><span class="question-number" id="questionNumber">Soal No. 1</span><span class="question-category" id="questionCategory">TWK</span></div>
                 <div class="question-text" id="questionText"></div>
                 <div class="options-list" id="optionsList"></div>
                 <div class="nav-buttons">
@@ -420,14 +210,11 @@
                     <button class="btn btn-flag" id="btnFlag" onclick="toggleFlag()">🚩 Tandai</button>
                     <button class="btn btn-next" id="btnNext" onclick="nextQuestion()">Selanjutnya ➡</button>
                 </div>
-                <div style="text-align:center; margin-top:15px;">
-                    <button class="btn btn-submit" onclick="showSubmitModal()">📋 SELESAI & SUBMIT</button>
-                </div>
+                <div style="text-align:center; margin-top:15px;"><button class="btn btn-submit" onclick="showSubmitModal()">📋 SELESAI & SUBMIT</button></div>
             </div>
             <div class="sidebar">
                 <div class="nav-panel">
-                    <h3>Navigasi Soal</h3>
-                    <div class="nav-grid" id="navGrid"></div>
+                    <h3>Navigasi Soal</h3><div class="nav-grid" id="navGrid"></div>
                     <div class="nav-legend">
                         <div class="legend-item"><div class="legend-dot" style="border-color:#e0e0e0; background:white;"></div> Belum</div>
                         <div class="legend-item"><div class="legend-dot" style="border-color:#4caf50; background:#e8f5e9;"></div> Terjawab</div>
@@ -437,52 +224,28 @@
                 </div>
                 <div class="stats-panel">
                     <h3>📊 Statistik</h3>
-                    <div class="stat-row"><span>TWK (30 soal)</span><span class="stat-value" id="statTWK">0/30</span></div>
-                    <div class="stat-row"><span>TIU (35 soal)</span><span class="stat-value" id="statTIU">0/35</span></div>
-                    <div class="stat-row"><span>TKP (45 soal)</span><span class="stat-value" id="statTKP">0/45</span></div>
-                    <div class="stat-row" style="border-top:2px solid #eee; padding-top:8px; margin-top:5px;">
-                        <span><strong>Total Terjawab</strong></span>
-                        <span class="stat-value" id="statTotal">0/110</span>
-                    </div>
+                    <div class="stat-row"><span>TWK (30)</span><span class="stat-value" id="statTWK">0/30</span></div>
+                    <div class="stat-row"><span>TIU (35)</span><span class="stat-value" id="statTIU">0/35</span></div>
+                    <div class="stat-row"><span>TKP (45)</span><span class="stat-value" id="statTKP">0/45</span></div>
+                    <div class="stat-row" style="border-top:2px solid #eee; padding-top:8px; margin-top:5px;"><span><strong>Total</strong></span><span class="stat-value" id="statTotal">0/110</span></div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Result Screen -->
+    <!-- FIXED: Result Screen Structure -->
     <div id="resultScreen" class="container">
         <div class="result-screen" id="resultContent">
-            <div class="result-header">
-                <h2>📊 HASIL SIMULASI SKD</h2>
-                <div class="pass-badge" id="passBadge"></div>
-            </div>
+            <div class="result-header"><h2>📊 HASIL SIMULASI SKD</h2><div class="pass-badge" id="passBadge"></div></div>
             <div class="score-cards">
-                <div class="score-card" id="cardTWK">
-                    <div class="cat-name">TWK</div>
-                    <div class="score" id="scoreTWK">0</div>
-                    <div class="passing">Passing Grade: 65</div>
-                </div>
-                <div class="score-card" id="cardTIU">
-                    <div class="cat-name">TIU</div>
-                    <div class="score" id="scoreTIU">0</div>
-                    <div class="passing">Passing Grade: 80</div>
-                </div>
-                <div class="score-card" id="cardTKP">
-                    <div class="cat-name">TKP</div>
-                    <div class="score" id="scoreTKP">0</div>
-                    <div class="passing">Passing Grade: 166</div>
-                </div>
+                <div class="score-card" id="cardTWK"><div class="cat-name">TWK</div><div class="score" id="scoreTWK">0</div><div class="passing">Passing Grade: 65</div></div>
+                <div class="score-card" id="cardTIU"><div class="cat-name">TIU</div><div class="score" id="scoreTIU">0</div><div class="passing">Passing Grade: 80</div></div>
+                <div class="score-card" id="cardTKP"><div class="cat-name">TKP</div><div class="score" id="scoreTKP">0</div><div class="passing">Passing Grade: 166</div></div>
             </div>
-            <div class="total-score">
-                <div class="label">TOTAL SKOR</div>
-                <div class="value" id="totalScore">0 / 550</div>
-            </div>
-            <div style="text-align:center; margin:20px 0;">
-                <button class="btn btn-start" onclick="location.reload()">🔄 Ulangi Simulasi</button>
-            </div>
+            <div class="total-score"><div class="label">TOTAL SKOR</div><div class="value" id="totalScore">0 / 550</div></div>
+            <div style="text-align:center; margin:20px 0;"><button class="btn btn-start" onclick="location.reload()">🔄 Ulangi Simulasi</button></div>
             <div class="review-section" id="reviewSection">
                 <h3 style="margin-bottom:15px; color:#333;">📝 Review Jawaban & Pembahasan</h3>
-                <!-- FIXED: Filter tabs sekarang mengirim 'this' sebagai elemen eksplisit -->
                 <div class="filter-tabs">
                     <div class="filter-tab active" onclick="filterReview(this, 'all')">Semua</div>
                     <div class="filter-tab" onclick="filterReview(this, 'TWK')">TWK</div>
@@ -496,26 +259,20 @@
         </div>
     </div>
 
-    <!-- Submit Modal -->
     <div class="modal-overlay" id="submitModal">
         <div class="modal-content">
-            <h3>⚠️ Konfirmasi Submit</h3>
-            <p id="submitMessage">Apakah Anda yakin ingin menyelesaikan ujian?</p>
-            <div class="modal-buttons">
-                <button class="btn btn-prev" onclick="closeModal()">Kembali</button>
-                <button class="btn btn-submit" onclick="submitExam()">Ya, Submit!</button>
-            </div>
+            <h3>⚠️ Konfirmasi Submit</h3><p id="submitMessage"></p>
+            <div class="modal-buttons"><button class="btn btn-prev" onclick="closeModal()">Kembali</button><button class="btn btn-submit" onclick="submitExam()">Ya, Submit!</button></div>
         </div>
     </div>
 
     <script>
-        // ==================== QUESTION DATA (TIDAK DIUBAH) ====================
+        // ==================== QUESTION DATA ====================
         const questions = [
-            // ===== TWK (1-30) =====
-            {id:1,category:"TWK",text:"Maraknya berita hoax dan disinformasi di media sosial menjadi ancaman serius bagi persatuan dan kesatuan bangsa. Informasi palsu yang sengaja disebar dapat memecah belah masyarakat, memicu konflik, dan merusak tatanan sosial.\n\nTindakan yang paling efektif untuk melawan hoax dan disinformasi adalah...",options:["Memblokir semua akun media sosial yang menyebarkan hoax dan melaporkannya kepada pihak berwajib.","Meningkatkan literasi media digital masyarakat, mengedukasi cara memverifikasi informasi, dan aktif menyebarkan konten positif dan faktual.","Mengabaikan berita hoax dan disinformasi karena akan hilang dengan sendirinya.","Membuat undang-undang yang lebih ketat untuk menghukum penyebar hoax dan disinformasi dengan hukuman maksimal.","Membatasi akses internet dan media sosial untuk mencegah penyebaran hoax dan disinformasi."],answer:1,explanation:"Literasi media digital, edukasi verifikasi, dan konten positif adalah pendekatan yang paling preventif dan efektif. Dengan meningkatkan literasi media digital, masyarakat akan lebih cerdas dan kritis dalam menerima informasi, mampu memverifikasi kebenarannya, dan tidak mudah terpengaruh hoax. Selain itu, aktif menyebarkan konten positif dan faktual akan menyeimbangkan narasi di media sosial dan melawan dominasi hoax. Ini adalah bentuk nasionalisme yang proaktif dan memberdayakan masyarakat."},
-            {id:2,category:"TWK",text:"Dalam bidang ekonomi, Indonesia memiliki potensi sumber daya alam (SDA) yang melimpah. Namun, seringkali kekayaan SDA ini belum sepenuhnya dimanfaatkan untuk kemakmuran rakyat dan justru lebih banyak dinikmati oleh pihak asing atau segelintir elit.\n\nImplementasi nasionalisme ekonomi yang paling tepat untuk mengatasi masalah ini adalah...",options:["Menerapkan kebijakan yang berpihak pada kepentingan nasional, seperti hilirisasi industri, peningkatan nilai tambah SDA di dalam negeri, dan penguatan BUMN di sektor strategis.","Menasionalisasi semua perusahaan asing yang mengelola SDA Indonesia tanpa kompensasi.","Membiarkan perusahaan asing mengelola SDA Indonesia sepenuhnya karena mereka lebih efisien dan profesional.","Menghentikan eksploitasi SDA sama sekali untuk menjaga kelestarian lingkungan dan mewariskan SDA untuk generasi mendatang.","Membagi-bagikan kekayaan SDA secara merata kepada seluruh rakyat Indonesia agar semua merasakan manfaatnya."],answer:0,explanation:"Kebijakan berpihak pada kepentingan nasional adalah pendekatan yang paling rasional dan strategis. Hilirisasi industri (mengolah SDA menjadi produk jadi di dalam negeri), peningkatan nilai tambah, dan penguatan BUMN adalah langkah-langkah konkret untuk memastikan bahwa kekayaan SDA benar-benar memberikan manfaat maksimal bagi perekonomian nasional dan kesejahteraan rakyat. Ini adalah bentuk nasionalisme ekonomi yang cerdas dan berorientasi pada pembangunan jangka panjang."},
-            {id:3,category:"TWK",text:"Dalam sistem demokrasi, partisipasi aktif warga negara dalam proses politik adalah kunci untuk mewujudkan kepentingan nasional. Namun, seringkali partisipasi politik masyarakat masih rendah, terutama di kalangan generasi muda.\n\nUpaya yang paling tepat untuk meningkatkan partisipasi politik generasi muda adalah...",options:["Mewajibkan semua warga negara untuk mengikuti pemilu dan memberikan sanksi bagi yang tidak berpartisipasi.","Mengadakan kampanye politik yang masif di media sosial dengan menggunakan tokoh-tokoh influencer dan selebriti.","Meningkatkan pendidikan politik dan kesadaran kewarganegaraan sejak dini, memfasilitasi ruang partisipasi yang kreatif dan relevan bagi generasi muda, serta membangun kepercayaan terhadap sistem demokrasi.","Menyederhanakan sistem politik dan mengurangi jumlah partai politik agar lebih mudah dipahami dan diikuti oleh generasi muda.","Membatasi hak politik bagi generasi muda yang dianggap belum memiliki kematangan dan pengalaman politik yang cukup."],answer:2,explanation:"Pendidikan politik, ruang partisipasi kreatif, dan membangun kepercayaan adalah pendekatan yang paling holistik dan berkelanjutan. Pendidikan politik sejak dini akan menumbuhkan kesadaran kewarganegaraan dan pemahaman tentang demokrasi. Memfasilitasi ruang partisipasi yang kreatif dan relevan (misalnya melalui forum diskusi, platform digital, kegiatan sosial) akan menarik minat generasi muda untuk terlibat dalam politik."},
-            {id:4,category:"TWK",text:"Indonesia memiliki cita-cita luhur untuk menjadi negara maju dan berdaulat. Untuk mewujudkan cita-cita ini, diperlukan sinergi dan kerjasama dari seluruh elemen bangsa, termasuk pemerintah, masyarakat sipil, dunia usaha, dan akademisi.\n\nImplementasi nasionalisme yang paling konstruktif dalam mewujudkan cita-cita negara maju adalah...",options:["Pemerintah membuat semua keputusan dan kebijakan pembangunan secara sentralistik dan masyarakat tinggal mengikuti.","Setiap elemen bangsa (pemerintah, masyarakat sipil, dunia usaha, akademisi) memainkan peran masing-masing secara sinergis dan saling mendukung, dengan berlandaskan pada nilai-nilai Pancasila dan kepentingan nasional.","Masyarakat sipil dan akademisi mengkritik pemerintah secara terus-menerus tanpa memberikan solusi konstruktif.","Dunia usaha fokus pada mencari keuntungan sebesar-besarnya tanpa memperhatikan dampak sosial dan lingkungan.","Akademisi hanya fokus pada penelitian dan pengembangan ilmu pengetahuan tanpa terlibat dalam masalah-masalah riil bangsa."],answer:1,explanation:"Sinergi dan kerja sama antar-elemen bangsa adalah pendekatan yang paling ideal dan konstruktif. Setiap elemen bangsa memiliki peran dan kontribusi masing-masing."},
+            {id:1,category:"TWK",text:"Maraknya berita hoax dan disinformasi di media sosial menjadi ancaman serius bagi persatuan dan kesatuan bangsa. Informasi palsu yang sengaja disebar dapat memecah belah masyarakat, memicu konflik, dan merusak tatanan sosial.\n\nTindakan yang paling efektif untuk melawan hoax dan disinformasi adalah...",options:["Memblokir semua akun media sosial yang menyebarkan hoax dan melaporkannya kepada pihak berwajib.","Meningkatkan literasi media digital masyarakat, mengedukasi cara memverifikasi informasi, dan aktif menyebarkan konten positif dan faktual.","Mengabaikan berita hoax dan disinformasi karena akan hilang dengan sendirinya.","Membuat undang-undang yang lebih ketat untuk menghukum penyebar hoax dan disinformasi dengan hukuman maksimal.","Membatasi akses internet dan media sosial untuk mencegah penyebaran hoax dan disinformasi."],answer:1,explanation:"Literasi media digital, edukasi verifikasi, dan konten positif adalah pendekatan yang paling preventif dan efektif. Dengan meningkatkan literasi media digital, masyarakat akan lebih cerdas dan kritis dalam menerima informasi, mampu memverifikasi kebenarannya, dan tidak mudah terpengaruh hoax."},
+            {id:2,category:"TWK",text:"Dalam bidang ekonomi, Indonesia memiliki potensi sumber daya alam (SDA) yang melimpah. Namun, seringkali kekayaan SDA ini belum sepenuhnya dimanfaatkan untuk kemakmuran rakyat dan justru lebih banyak dinikmati oleh pihak asing atau segelintir elit.\n\nImplementasi nasionalisme ekonomi yang paling tepat untuk mengatasi masalah ini adalah...",options:["Menerapkan kebijakan yang berpihak pada kepentingan nasional, seperti hilirisasi industri, peningkatan nilai tambah SDA di dalam negeri, dan penguatan BUMN di sektor strategis.","Menasionalisasi semua perusahaan asing yang mengelola SDA Indonesia tanpa kompensasi.","Membiarkan perusahaan asing mengelola SDA Indonesia sepenuhnya karena mereka lebih efisien dan profesional.","Menghentikan eksploitasi SDA sama sekali untuk menjaga kelestarian lingkungan dan mewariskan SDA untuk generasi mendatang.","Membagi-bagikan kekayaan SDA secara merata kepada seluruh rakyat Indonesia agar semua merasakan manfaatnya."],answer:0,explanation:"Kebijakan berpihak pada kepentingan nasional adalah pendekatan yang paling rasional dan strategis. Hilirisasi industri (mengolah SDA menjadi produk jadi di dalam negeri), peningkatan nilai tambah, dan penguatan BUMN adalah langkah-langkah konkret untuk memastikan bahwa kekayaan SDA benar-benar memberikan manfaat maksimal bagi perekonomian nasional."},
+            {id:3,category:"TWK",text:"Dalam sistem demokrasi, partisipasi aktif warga negara dalam proses politik adalah kunci untuk mewujudkan kepentingan nasional. Namun, seringkali partisipasi politik masyarakat masih rendah, terutama di kalangan generasi muda.\n\nUpaya yang paling tepat untuk meningkatkan partisipasi politik generasi muda adalah...",options:["Mewajibkan semua warga negara untuk mengikuti pemilu dan memberikan sanksi bagi yang tidak berpartisipasi.","Mengadakan kampanye politik yang masif di media sosial dengan menggunakan tokoh-tokoh influencer dan selebriti.","Meningkatkan pendidikan politik dan kesadaran kewarganegaraan sejak dini, memfasilitasi ruang partisipasi yang kreatif dan relevan bagi generasi muda, serta membangun kepercayaan terhadap sistem demokrasi.","Menyederhanakan sistem politik dan mengurangi jumlah partai politik agar lebih mudah dipahami dan diikuti oleh generasi muda.","Membatasi hak politik bagi generasi muda yang dianggap belum memiliki kematangan dan pengalaman politik yang cukup."],answer:2,explanation:"Pendidikan politik, ruang partisipasi kreatif, dan membangun kepercayaan adalah pendekatan yang paling holistik dan berkelanjutan."},
+            {id:4,category:"TWK",text:"Indonesia memiliki cita-cita luhur untuk menjadi negara maju dan berdaulat. Untuk mewujudkan cita-cita ini, diperlukan sinergi dan kerjasama dari seluruh elemen bangsa, termasuk pemerintah, masyarakat sipil, dunia usaha, dan akademisi.\n\nImplementasi nasionalisme yang paling konstruktif dalam mewujudkan cita-cita negara maju adalah...",options:["Pemerintah membuat semua keputusan dan kebijakan pembangunan secara sentralistik dan masyarakat tinggal mengikuti.","Setiap elemen bangsa (pemerintah, masyarakat sipil, dunia usaha, akademisi) memainkan peran masing-masing secara sinergis dan saling mendukung, dengan berlandaskan pada nilai-nilai Pancasila dan kepentingan nasional.","Masyarakat sipil dan akademisi mengkritik pemerintah secara terus-menerus tanpa memberikan solusi konstruktif.","Dunia usaha fokus pada mencari keuntungan sebesar-besarnya tanpa memperhatikan dampak sosial dan lingkungan.","Akademisi hanya fokus pada penelitian dan pengembangan ilmu pengetahuan tanpa terlibat dalam masalah-masalah riil bangsa."],answer:1,explanation:"Sinergi dan kerja sama antar-elemen bangsa adalah pendekatan yang paling ideal dan konstruktif."},
             {id:5,category:"TWK",text:"Perkembangan teknologi kecerdasan buatan (AI) semakin pesat dan menawarkan banyak kemudahan dalam berbagai bidang. Namun, di sisi lain, AI juga menimbulkan kekhawatiran terkait potensi hilangnya lapangan kerja manusia, bias algoritmik, dan ketergantungan pada teknologi asing.\n\nBagaimana seharusnya Indonesia menyikapi perkembangan AI ini?",options:["Menolak pengembangan AI di Indonesia karena akan menggantikan peran manusia dan mengancam kedaulatan bangsa.","Menerima sepenuhnya perkembangan AI tanpa regulasi agar Indonesia tidak tertinggal dari negara lain.","Mengimpor teknologi AI dari negara maju dan menggunakannya secara masif untuk meningkatkan efisiensi di semua sektor.","Membiarkan perkembangan AI berjalan secara alami tanpa campur tangan pemerintah agar pasar bebas menentukan arah perkembangannya.","Mendorong pengembangan AI secara nasional dengan fokus pada inovasi lokal, etika penggunaan AI, dan regulasi yang melindungi kepentingan nasional dan tenaga kerja Indonesia."],answer:4,explanation:"Mendorong pengembangan AI nasional dengan fokus pada inovasi lokal, etika, dan regulasi adalah pendekatan yang paling strategis dan nasionalis."},
             {id:6,category:"TWK",text:"Pandemi global COVID-19 telah menunjukkan betapa pentingnya kemandirian dan ketahanan nasional dalam bidang kesehatan. Ketergantungan pada impor vaksin, obat-obatan, dan peralatan medis dari negara lain dapat menjadi masalah serius saat krisis kesehatan global terjadi.\n\nLangkah prioritas yang harus dilakukan Indonesia untuk meningkatkan ketahanan kesehatan nasional adalah...",options:["Menutup semua pintu masuk bagi tenaga medis asing dan memprioritaskan tenaga medis lokal.","Meningkatkan investasi dalam riset dan pengembangan bidang kesehatan dalam negeri, memproduksi vaksin dan obat-obatan sendiri, serta memperkuat sistem kesehatan masyarakat hingga pelosok negeri.","Membeli semua kebutuhan kesehatan dari negara maju agar kualitasnya terjamin.","Mengandalkan bantuan dan donasi dari negara lain dan organisasi internasional untuk memenuhi kebutuhan kesehatan nasional.","Membiarkan mekanisme pasar bebas menentukan sistem kesehatan nasional tanpa intervensi pemerintah."],answer:1,explanation:"Investasi riset kesehatan, produksi dalam negeri, dan perkuat sistem kesehatan adalah pendekatan yang paling strategis dan nasionalis."},
             {id:7,category:"TWK",text:"Anda adalah seorang peneliti di lembaga riset pemerintah yang bertugas mengembangkan teknologi pertanian untuk meningkatkan produktivitas pangan nasional. Dalam penelitian, Anda menemukan data yang menunjukkan bahwa salah satu produk pertanian unggulan yang selama ini dipromosikan pemerintah ternyata memiliki dampak negatif terhadap lingkungan dalam jangka panjang. Publikasi data ini dapat menimbulkan kontroversi dan berpotensi menghambat program pemerintah yang sedang berjalan.\n\nSebagai peneliti yang menjunjung tinggi integritas ilmiah dan tanggung jawab publik, tindakan paling tepat yang harus Anda lakukan adalah...",options:["Menyembunyikan data tersebut dan melanjutkan penelitian pada aspek lain yang lebih positif, demi menjaga reputasi lembaga riset dan menghindari konflik dengan pemerintah.","Memodifikasi data penelitian agar terlihat lebih positif dan sesuai dengan narasi pemerintah, sehingga hasil penelitian tetap dapat dipublikasikan tanpa menimbulkan kontroversi.","Membatasi publikasi data penelitian tersebut hanya di kalangan internal lembaga riset, dan menunggu arahan lebih lanjut dari atasan mengenai langkah publikasi yang tepat.","Membocorkan data penelitian tersebut kepada media massa secara anonim untuk menciptakan tekanan publik agar pemerintah segera bertindak, tanpa melalui jalur komunikasi resmi.","Mempublikasikan data penelitian tersebut secara jujur dan transparan melalui jurnal ilmiah dan forum publik yang relevan, serta mengkomunikasikan temuan ini kepada pemerintah dan masyarakat secara bertanggung jawab."],answer:4,explanation:"Pilihan E adalah tindakan paling berintegritas karena menunjukkan kejujuran, ketangguhan, komitmen, dan konsistensi terhadap prinsip kebenaran ilmiah dan tanggung jawab publik."},
@@ -542,7 +299,6 @@
             {id:28,category:"TWK",text:`<div class="passage">Era digital telah membawa data pribadi menjadi komoditas berharga. Untuk mengatasi tantangan perlindungan data, diperlukan pendekatan holistik yang melibatkan regulasi yang kuat, teknologi privasi yang inovatif, literasi digital masyarakat, dan kesadaran etika dari pengembang teknologi dan organisasi yang mengelola data pribadi.</div>\n\nBerdasarkan teks di atas, pendekatan paling fundamental dan etis untuk menjamin perlindungan data pribadi di era digital yang semakin kompleks adalah...`,options:["Menerapkan regulasi pemerintah yang ketat dan hukuman berat.","Mengembangkan teknologi enkripsi dan anonimisasi yang canggih.","Meningkatkan literasi digital masyarakat.","Mendorong perusahaan teknologi untuk lebih transparan.","Membangun kesadaran etika di kalangan pengembang teknologi dan organisasi tentang pentingnya privasi sebagai hak asasi manusia."],answer:4,explanation:"Teks menekankan pentingnya 'kesadaran etika dari pengembang teknologi dan organisasi' sebagai bagian dari pendekatan holistik. Opsi E paling tepat."},
             {id:29,category:"TWK",text:`<div class="passage">Globalisasi telah membawa perubahan signifikan dalam rantai pasok global. Di masa depan, diversifikasi pemasok, digitalisasi rantai pasok, dan fokus pada keberlanjutan akan menjadi kunci untuk membangun rantai pasok global yang resilient, transparan, dan bertanggung jawab.</div>\n\nBerdasarkan teks di atas, strategi paling adaptif dan berorientasi masa depan bagi perusahaan untuk membangun rantai pasok yang lebih tahan terhadap disrupsi global adalah...`,options:["Memperkuat hubungan jangka panjang dengan pemasok tunggal.","Meningkatkan investasi dalam logistik global yang lebih canggih.","Menerapkan strategi reshoring atau nearshoring.","Mengandalkan perjanjian perdagangan bebas.","Melakukan diversifikasi pemasok, digitalisasi rantai pasok, dan fokus pada keberlanjutan dalam operasional."],answer:4,explanation:"Teks secara eksplisit menyatakan 'Di masa depan, diversifikasi pemasok, digitalisasi rantai pasok, dan fokus pada keberlanjutan akan menjadi kunci.' Opsi E paling tepat."},
             {id:30,category:"TWK",text:`<div class="passage">Penerapan Kecerdasan Buatan (AI) dalam pendidikan menawarkan potensi revolusioner untuk personalisasi pembelajaran. Namun, implementasi AI dalam pendidikan juga menimbulkan kekhawatiran etika yang serius. Salah satu isu utama adalah potensi bias algoritmik. Algoritma AI dilatih menggunakan data historis, dan jika data tersebut mencerminkan ketidaksetaraan, maka AI dapat memperkuat dan melanggengkan bias tersebut.</div>\n\nBerdasarkan teks di atas, tantangan etika paling signifikan dalam penerapan AI untuk personalisasi pembelajaran adalah...`,options:["Risiko bias algoritmik yang dapat memperkuat ketidaksetaraan dan diskriminasi dalam sistem pendidikan.","Potensi AI untuk meningkatkan efektivitas pembelajaran.","Kemampuan AI untuk mengotomatiskan tugas-tugas administratif guru.","Perlunya investasi besar dalam infrastruktur teknologi.","Kekhawatiran tentang privasi data siswa."],answer:0,explanation:"Teks secara eksplisit menyatakan 'Salah satu isu utama adalah potensi bias algoritmik... AI dapat memperkuat dan melanggengkan bias tersebut dalam sistem pembelajaran yang dipersonalisasi.' Opsi A paling tepat."},
-            // ===== TIU (31-65) =====
             {id:31,category:"TIU",text:"SAJAK : PUISI = ADEGAN : ....",options:["FILM","SUTRADARA","KAMERA","AKTOR","SKENARIO"],answer:0,explanation:"Sajak adalah bagian dari puisi. Adegan adalah unit pembentuk film. Jawaban: FILM."},
             {id:32,category:"TIU",text:"MOBIL : BENSIN = TUBUH : ....",options:["MAKANAN","OTOT","DARAH","JANTUNG","PARU-PARU"],answer:0,explanation:"Mobil membutuhkan bensin sebagai bahan bakar. Tubuh membutuhkan makanan sebagai sumber energi."},
             {id:33,category:"TIU",text:"ARSITEK : BANGUNAN = KOMPOSER : ....",options:["MUSIK","PIANO","KONSER","ORCHESTRA","NADA"],answer:0,explanation:"Arsitek menciptakan bangunan. Komposer menciptakan musik."},
@@ -578,7 +334,6 @@
             {id:63,category:"TIU",text:"[Soal Gambar - Pola Elemen]\n\nHanya pada satu gambar, dua dari tiga elemen merupakan elemen yang serupa.\n\nPilih gambar yang berbeda:",options:["Opsi A","Opsi B","Opsi C","Opsi D","Opsi E"],answer:2,explanation:"Hanya pada gambar C, dua dari tiga elemen serupa. Jawaban: C."},
             {id:64,category:"TIU",text:"[Soal Gambar - Seri]\n\nGambar yang sama berulang pada setiap tahap kedua. Setiap kali sebuah gambar tertentu muncul kembali, gambar tersebut berotasi 90° searah jarum jam.\n\nPilih gambar selanjutnya:",options:["Opsi A","Opsi B","Opsi C","Opsi D","Opsi E"],answer:4,explanation:"Gambar berulang setiap tahap kedua dengan rotasi 90°. Jawaban: E."},
             {id:65,category:"TIU",text:"[Soal Gambar - Matriks]\n\nElemen-elemen mengambil posisi secara bergantian dan digantikan elemen-elemen baru secara beruntun.\n\nPilih jawaban yang tepat:",options:["Opsi A","Opsi B","Opsi C","Opsi D","Opsi E"],answer:1,explanation:"Elemen 1, 2, 3, 4 digantikan elemen baru secara beruntun. Jawaban: B."},
-            // ===== TKP (66-110) =====
             {id:66,category:"TKP",text:"Anda adalah seorang petugas layanan pelanggan di sebuah perusahaan air minum daerah. Seorang pelanggan menelepon untuk melaporkan bahwa air di rumahnya keruh dan berbau.\n\nBagaimana Anda merespons keluhan pelanggan tersebut?",options:["Mencatat laporan pelanggan dan berjanji akan menyampaikan ke bagian teknis.","Mencatat laporan, memberikan nomor laporan, dan menginformasikan perkiraan waktu penanganan.","Mencatat laporan, memberikan nomor laporan, menginformasikan waktu penanganan, memberikan tips, dan menawarkan kompensasi jika masalah tidak segera teratasi.","Mengatakan bahwa mungkin pipa di rumah pelanggan yang bermasalah, bukan dari perusahaan.","Mencatat laporan, memberikan nomor laporan, menginformasikan waktu penanganan, dan memberikan tips sementara untuk mengatasi masalah."],scores:[2,3,5,1,4],explanation:"Pilihan C menunjukkan komitmen untuk memberikan pelayanan yang berkualitas dan bertanggung jawab."},
             {id:67,category:"TKP",text:"Anda adalah seorang petugas di pusat layanan informasi publik. Seorang jurnalis datang untuk meminta data tentang anggaran penanganan COVID-19 di daerah Anda. Ia membawa surat tugas resmi dari media tempatnya bekerja.\n\nBagaimana Anda menanggapi permintaan jurnalis tersebut?",options:["Meminta jurnalis untuk mengajukan permintaan tertulis, menjelaskan prosedur pengajuan data, dan memberikan perkiraan waktu penyediaan data.","Meminta jurnalis untuk mengajukan permintaan tertulis, menjelaskan prosedur, memberikan perkiraan waktu, dan memberikan informasi tentang data yang tersedia secara publik.","Meminta jurnalis untuk mengajukan permintaan secara tertulis dan menunggu persetujuan dari atasan.","Meminta jurnalis untuk mengajukan permintaan tertulis, menjelaskan prosedur, memberikan perkiraan waktu, memberikan informasi publik, dan membantu jurnalis menemukan data yang relevan.","Menolak permintaan jurnalis, karena data tersebut bersifat rahasia."],scores:[3,4,2,5,1],explanation:"Pilihan D menunjukkan sikap yang transparan dan proaktif dalam memberikan informasi kepada publik."},
             {id:68,category:"TKP",text:"Anda bekerja di bagian perizinan sebuah dinas penanaman modal. Seorang pengusaha datang untuk mengajukan izin usaha baru. Ia membawa dokumen yang lengkap, tetapi Anda menemukan ada satu persyaratan yang tidak sesuai dengan peraturan terbaru.\n\nBagaimana Anda menangani situasi ini?",options:["Menjelaskan persyaratan, memberikan informasi tentang cara memenuhi persyaratan, dan menawarkan bantuan jika diperlukan.","Menjelaskan persyaratan, membantu, memberikan informasi tentang alternatif solusi jika persyaratan sulit dipenuhi, dan memberikan prioritas pelayanan setelah persyaratan lengkap.","Menolak pengajuan izin usaha tersebut karena tidak sesuai dengan peraturan.","Menjelaskan kepada pengusaha tentang persyaratan yang tidak sesuai dan meminta untuk dilengkapi.","Menjelaskan persyaratan, membantu, memberikan alternatif solusi, memberikan prioritas, dan memberikan nomor kontak untuk konsultasi lanjutan."],scores:[3,4,1,2,5],explanation:"Pilihan E menunjukkan sikap yang paling proaktif dan solutif."},
@@ -636,7 +391,6 @@
 
         const startScreen = document.getElementById('startScreen');
         const examScreen = document.getElementById('examScreen');
-        const resultScreen = document.getElementById('resultScreen');
         const timerDisplay = document.getElementById('timerDisplay');
         const timerBox = document.getElementById('timerBox');
         const progressText = document.getElementById('progressText');
@@ -665,16 +419,9 @@
             timerInterval = setInterval(() => {
                 timeLeft--;
                 updateTimerDisplay();
-                if (timeLeft <= 300) {
-                    timerBox.classList.add('danger');
-                    timerBox.classList.remove('warning');
-                } else if (timeLeft <= 600) {
-                    timerBox.classList.add('warning');
-                }
-                if (timeLeft <= 0) {
-                    clearInterval(timerInterval);
-                    submitExam();
-                }
+                if (timeLeft <= 300) { timerBox.classList.add('danger'); timerBox.classList.remove('warning'); }
+                else if (timeLeft <= 600) { timerBox.classList.add('warning'); }
+                if (timeLeft <= 0) { clearInterval(timerInterval); submitExam(); }
             }, 1000);
         }
 
@@ -690,10 +437,7 @@
                 const item = document.createElement('div');
                 item.className = 'nav-item';
                 item.textContent = index + 1;
-                item.onclick = () => {
-                    currentQuestionIndex = index;
-                    renderQuestion();
-                };
+                item.onclick = () => { currentQuestionIndex = index; renderQuestion(); };
                 navGrid.appendChild(item);
             });
             updateNavGrid();
@@ -719,8 +463,7 @@
             const totalAnswered = userAnswers.filter(a => a !== null).length;
             document.getElementById('statTotal').textContent = `${totalAnswered}/110`;
             answeredCount.textContent = `Terjawab: ${totalAnswered}/110`;
-            const progress = (totalAnswered / questions.length) * 100;
-            progressFill.style.width = `${progress}%`;
+            progressFill.style.width = `${(totalAnswered / questions.length) * 100}%`;
         }
 
         function renderQuestion() {
@@ -742,64 +485,34 @@
             progressText.textContent = `Soal ${currentQuestionIndex + 1} dari ${questions.length}`;
             btnPrev.disabled = currentQuestionIndex === 0;
             btnNext.textContent = currentQuestionIndex === questions.length - 1 ? 'Selesai ➡' : 'Selanjutnya ➡';
-            if (flaggedQuestions.has(currentQuestionIndex)) {
-                btnFlag.classList.add('flagged');
-                btnFlag.innerHTML = '🚩 Ditandai';
-            } else {
-                btnFlag.classList.remove('flagged');
-                btnFlag.innerHTML = '🚩 Tandai';
-            }
+            if (flaggedQuestions.has(currentQuestionIndex)) { btnFlag.classList.add('flagged'); btnFlag.innerHTML = '🚩 Ditandai'; }
+            else { btnFlag.classList.remove('flagged'); btnFlag.innerHTML = '🚩 Tandai'; }
             updateNavGrid();
             window.scrollTo(0, 0);
         }
 
-        function selectOption(index) {
-            userAnswers[currentQuestionIndex] = index;
-            renderQuestion();
-        }
-
-        function prevQuestion() {
-            if (currentQuestionIndex > 0) {
-                currentQuestionIndex--;
-                renderQuestion();
-            }
-        }
-
-        function nextQuestion() {
-            if (currentQuestionIndex < questions.length - 1) {
-                currentQuestionIndex++;
-                renderQuestion();
-            } else {
-                showSubmitModal();
-            }
-        }
-
-        function toggleFlag() {
-            if (flaggedQuestions.has(currentQuestionIndex)) flaggedQuestions.delete(currentQuestionIndex);
-            else flaggedQuestions.add(currentQuestionIndex);
-            renderQuestion();
-        }
-
+        function selectOption(index) { userAnswers[currentQuestionIndex] = index; renderQuestion(); }
+        function prevQuestion() { if (currentQuestionIndex > 0) { currentQuestionIndex--; renderQuestion(); } }
+        function nextQuestion() { if (currentQuestionIndex < questions.length - 1) { currentQuestionIndex++; renderQuestion(); } else { showSubmitModal(); } }
+        function toggleFlag() { if (flaggedQuestions.has(currentQuestionIndex)) flaggedQuestions.delete(currentQuestionIndex); else flaggedQuestions.add(currentQuestionIndex); renderQuestion(); }
+        
         function showSubmitModal() {
             const unanswered = userAnswers.filter(a => a === null).length;
-            submitMessage.textContent = unanswered > 0
-                ? `Anda masih memiliki ${unanswered} soal yang belum dijawab. Yakin ingin mengumpulkan jawaban?`
-                : `Semua soal telah dijawab. Yakin ingin mengumpulkan jawaban dan melihat hasil?`;
+            submitMessage.textContent = unanswered > 0 ? `Anda masih memiliki ${unanswered} soal yang belum dijawab. Yakin ingin mengumpulkan jawaban?` : `Semua soal telah dijawab. Yakin ingin mengumpulkan jawaban dan melihat hasil?`;
             submitModal.style.display = 'flex';
         }
-
         function closeModal() { submitModal.style.display = 'none'; }
 
+        // FIXED: Menampilkan halaman hasil dengan benar
         function submitExam() {
             clearInterval(timerInterval);
             closeModal();
             examScreen.classList.add('hidden');
-            resultScreen.style.display = 'block';
+            document.getElementById('resultScreen').style.display = 'block';
             calculateResults();
             window.scrollTo(0, 0);
         }
 
-        /* FIXED: calculateResults() sekarang menyimpan teks soal utuh dan seluruh pilihan jawaban */
         function calculateResults() {
             let scoreTWK = 0, scoreTIU = 0, scoreTKP = 0;
             allReviewData = [];
@@ -814,151 +527,87 @@
                 if (q.category === 'TWK' || q.category === 'TIU') {
                     correctIndex = q.answer;
                     if (userAns === correctIndex) {
-                        isCorrect = true;
-                        score = 5;
-                        if (q.category === 'TWK') scoreTWK += 5;
-                        else scoreTIU += 5;
+                        isCorrect = true; score = 5;
+                        if (q.category === 'TWK') scoreTWK += 5; else scoreTIU += 5;
                     }
-                } else if (q.category === 'TKP') {
+                } else if (q.category === 'TKP' && q.scores) {
                     correctIndex = q.scores.indexOf(5);
-                    if (userAns !== null) {
-                        score = q.scores[userAns];
-                        scoreTKP += score;
-                        isCorrect = (score === 5);
-                    }
+                    if (userAns !== null) { score = q.scores[userAns]; scoreTKP += score; isCorrect = (score === 5); }
                 }
 
                 allReviewData.push({
-                    id: q.id,
-                    category: q.category,
-                    text: q.text,                    // FIXED: simpan teks utuh (tidak dipotong)
-                    options: q.options,              // FIXED: simpan semua pilihan jawaban
-                    userAnsIndex: userAns,
-                    correctIndex: correctIndex,
+                    id: q.id, category: q.category, text: q.text, options: q.options || [],
+                    userAnsIndex: userAns, correctIndex: correctIndex,
                     userLetter: userAns !== null ? letters[userAns] : '-',
-                    correctLetter: letters[correctIndex],
-                    isCorrect: isCorrect,
-                    score: score,
-                    explanation: q.explanation
+                    correctLetter: correctIndex !== -1 ? letters[correctIndex] : '-',
+                    isCorrect: isCorrect, score: score,
+                    explanation: q.explanation || 'Pembahasan untuk soal ini belum tersedia.'
                 });
             });
 
             document.getElementById('scoreTWK').textContent = scoreTWK;
             document.getElementById('scoreTIU').textContent = scoreTIU;
             document.getElementById('scoreTKP').textContent = scoreTKP;
-            const totalScore = scoreTWK + scoreTIU + scoreTKP;
-            document.getElementById('totalScore').textContent = `${totalScore} / 550`;
+            document.getElementById('totalScore').textContent = `${scoreTWK + scoreTIU + scoreTKP} / 550`;
 
-            const passTWK = scoreTWK >= 65;
-            const passTIU = scoreTIU >= 80;
-            const passTKP = scoreTKP >= 166;
+            const passTWK = scoreTWK >= 65, passTIU = scoreTIU >= 80, passTKP = scoreTKP >= 166;
             document.getElementById('cardTWK').className = `score-card ${passTWK ? 'pass' : 'fail'}`;
             document.getElementById('cardTIU').className = `score-card ${passTIU ? 'pass' : 'fail'}`;
             document.getElementById('cardTKP').className = `score-card ${passTKP ? 'pass' : 'fail'}`;
 
             const passBadge = document.getElementById('passBadge');
-            if (passTWK && passTIU && passTKP) {
-                passBadge.textContent = '🎉 LULUS PASSING GRADE';
-                passBadge.className = 'pass-badge lulus';
-            } else {
-                passBadge.textContent = '❌ TIDAK LULUS PASSING GRADE';
-                passBadge.className = 'pass-badge tidak-lulus';
-            }
+            if (passTWK && passTIU && passTKP) { passBadge.textContent = '🎉 LULUS PASSING GRADE'; passBadge.className = 'pass-badge lulus'; }
+            else { passBadge.textContent = '❌ TIDAK LULUS PASSING GRADE'; passBadge.className = 'pass-badge tidak-lulus'; }
+            
             renderReviewList('all');
         }
 
-        /* FIXED: renderReviewList() menampilkan teks soal lengkap + teks pilihan jawaban lengkap dengan highlight */
         function renderReviewList(filter) {
             const reviewList = document.getElementById('reviewList');
             reviewList.innerHTML = '';
             let filteredData = allReviewData;
+            if (['TWK', 'TIU', 'TKP'].includes(filter)) filteredData = allReviewData.filter(item => item.category === filter);
+            else if (filter === 'wrong') filteredData = allReviewData.filter(item => !item.isCorrect);
+            else if (filter === 'correct') filteredData = allReviewData.filter(item => item.isCorrect);
 
-            if (['TWK', 'TIU', 'TKP'].includes(filter)) {
-                filteredData = allReviewData.filter(item => item.category === filter);
-            } else if (filter === 'wrong') {
-                filteredData = allReviewData.filter(item => !item.isCorrect);
-            } else if (filter === 'correct') {
-                filteredData = allReviewData.filter(item => item.isCorrect);
-            }
-
-            if (filteredData.length === 0) {
-                reviewList.innerHTML = '<p style="text-align:center; color:#999; padding:20px;">Tidak ada soal yang sesuai filter.</p>';
-                return;
-            }
+            if (filteredData.length === 0) { reviewList.innerHTML = '<p style="text-align:center; color:#999; padding:20px;">Tidak ada soal yang sesuai filter.</p>'; return; }
 
             filteredData.forEach(item => {
                 const div = document.createElement('div');
                 div.className = 'review-item';
                 const catClass = item.category === 'TWK' ? 'cat-twk' : item.category === 'TIU' ? 'cat-tiu' : 'cat-tkp';
-
-                // FIXED: Bangun daftar pilihan jawaban lengkap dengan highlight
                 let optionsHtml = '<div class="review-options">';
                 const letters = ['A', 'B', 'C', 'D', 'E'];
+                
                 item.options.forEach((opt, idx) => {
-                    let optClass = 'review-option';
-                    let badges = '';
+                    let optClass = 'review-option'; let badges = '';
                     const isUserAnswer = (idx === item.userAnsIndex);
                     const isCorrectAnswer = (idx === item.correctIndex);
-
-                    if (isUserAnswer && isCorrectAnswer) {
-                        optClass += ' user-correct';
-                        badges = '<span class="answer-badge badge-your correct">✅ Jawaban Anda (Benar)</span>';
-                    } else if (isUserAnswer) {
-                        optClass += ' user-answer';
-                        badges = '<span class="answer-badge badge-your">❌ Jawaban Anda</span>';
-                    } else if (isCorrectAnswer) {
-                        optClass += ' correct-answer';
-                        badges = '<span class="answer-badge badge-key">🔑 Kunci Jawaban</span>';
-                    }
-
-                    optionsHtml += `
-                        <div class="${optClass}">
-                            <span class="opt-letter">${letters[idx]}.</span>
-                            <span>${opt}</span>
-                            ${badges}
-                        </div>
-                    `;
+                    if (isUserAnswer && isCorrectAnswer) { optClass += ' user-correct'; badges = '<span class="answer-badge badge-your correct">✅ Jawaban Anda (Benar)</span>'; }
+                    else if (isUserAnswer) { optClass += ' user-answer'; badges = '<span class="answer-badge badge-your">❌ Jawaban Anda</span>'; }
+                    else if (isCorrectAnswer) { optClass += ' correct-answer'; badges = '<span class="answer-badge badge-key">🔑 Kunci Jawaban</span>'; }
+                    optionsHtml += `<div class="${optClass}"><span class="opt-letter">${letters[idx]}.</span><span>${opt}</span>${badges}</div>`;
                 });
                 optionsHtml += '</div>';
 
-                // FIXED: Tampilkan info skor untuk TKP
                 let scoreInfoHtml = '';
                 if (item.category === 'TKP') {
                     const userScoreText = item.userAnsIndex !== null ? item.score : 'Tidak dijawab (0)';
-                    scoreInfoHtml = `
-                        <div class="score-info">
-                            <span class="your-score">Skor Anda: ${userScoreText}</span>
-                            <span class="best-score">Skor Terbaik: 5</span>
-                        </div>
-                    `;
+                    scoreInfoHtml = `<div class="score-info"><span class="your-score">Skor Anda: ${userScoreText}</span><span class="best-score">Skor Terbaik: 5</span></div>`;
                 } else {
-                    scoreInfoHtml = `
-                        <div class="score-info">
-                            <span class="${item.isCorrect ? 'best-score' : 'your-score'}">
-                                ${item.isCorrect ? '✅ Benar (+5)' : '❌ Salah (0)'}
-                            </span>
-                        </div>
-                    `;
+                    scoreInfoHtml = `<div class="score-info"><span class="${item.isCorrect ? 'best-score' : 'your-score'}">${item.isCorrect ? '✅ Benar (+5)' : '❌ Salah (0)'}</span></div>`;
                 }
 
                 div.innerHTML = `
-                    <div class="q-header">
-                        <span class="q-num">Soal No. ${item.id}</span>
-                        <span class="q-cat ${catClass}">${item.category}</span>
-                    </div>
+                    <div class="q-header"><span class="q-num">Soal No. ${item.id}</span><span class="q-cat ${catClass}">${item.category}</span></div>
                     <div class="q-text">${item.text}</div>
-                    ${optionsHtml}
-                    ${scoreInfoHtml}
-                    <div class="explanation">
-                        <strong>📖 Pembahasan:</strong><br>
-                        ${item.explanation}
-                    </div>
+                    ${optionsHtml} ${scoreInfoHtml}
+                    <div class="explanation"><strong>📖 Pembahasan:</strong><br>${item.explanation}</div>
                 `;
                 reviewList.appendChild(div);
             });
         }
 
-        /* FIXED: filterReview() menerima elemen tombol secara eksplisit (tidak bergantung event global) */
         function filterReview(element, filter) {
             document.querySelectorAll('.filter-tab').forEach(tab => tab.classList.remove('active'));
             element.classList.add('active');
